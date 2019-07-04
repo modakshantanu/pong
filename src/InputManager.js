@@ -38,42 +38,42 @@ const KEY = {
 	// It is always updated in real time once the eventListener is added
 	handleKeys(value, e){
 		let keys = this.pressedKeys;
-		switch (e.keyCode) {
-			case KEY.ONE:
+		switch (e.key) {
+			case '1': 
 				keys.red1.left = value;
 				break;
-			case KEY.TWO:
+			case '2':
 				keys.red1.right = value;
 				break;
-			case KEY.S:
+			case 's':case 'S':
 				keys.red2.left = value;
 				break;
-			case KEY.D:
+			case 'd':case 'D':
 				keys.red2.right = value;
 				break;
-			case KEY.V:
+			case 'v':case 'V':
 				keys.red3.left = value;
 				break;
-			case KEY.B:
+			case 'b':case 'B':
 				keys.red3.right = value;
 				break;
-			case KEY.N:
+			case 'n':case 'N':
 				keys.blue3.left = value;
 				break;
-			case KEY.M:
+			case 'm':case 'M':
 				keys.blue3.right = value;
 				break;
-			case KEY.L:
+			case 'l':case 'L':
 				keys.blue2.left = value;
 				break;
-			case KEY.SEMICOLON:
+			case ';':
 				keys.blue2.right = value;
 				break;
-			case KEY.MINUS:
+			case '-':
 				keys.blue1.left = value;
 		
 				break;
-			case KEY.EQUAL:
+			case '=':
 				keys.blue1.right = value;
 				break;
 				default:
