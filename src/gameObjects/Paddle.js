@@ -165,4 +165,8 @@ export default class Paddle {
 		});
 	
 	}
+
+	getInnerWall() {
+		console.log(this.tiltAngle);
+	}
 }

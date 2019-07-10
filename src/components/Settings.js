@@ -92,7 +92,6 @@ export default class Settings extends React.Component {
 					<div style = {{display:"flex" , flexDirection:"row"}}>
 						{AICheckboxArray}
 					</div>
-					<div>Note: This feature was added after milestone 2</div>
 					<div>Settings are applied when you reset game</div>
 				</div>
 			</div>

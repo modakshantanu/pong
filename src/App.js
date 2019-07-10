@@ -166,9 +166,6 @@ class App extends Component {
 			let {x1,y1,x2,y2} = this.paddles[2-i];
 			this.paddles.push(new Paddle({x1:x1, y1: 500-y1, x2:x2, y2:500-y2}))
 		}
-	
-	
-
 		
 		this.ball = new Ball({x:250, y: 250});
 		this.initBots();

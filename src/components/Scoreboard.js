@@ -51,11 +51,18 @@ const rightStyle = {
 	boxShadow:"0px 0px 0px 10px blue inset"
 }
 
+const pauseButton = {
+	margin:"auto",
+	height:"30px",
+	width:"30px",
 
+}
 
 
 
 export class Scoreboard extends React.Component {
+
+	
 
 	render() {
 		return (
@@ -63,6 +70,9 @@ export class Scoreboard extends React.Component {
 				<div style = {mainStyle}>
 					<div id = "red" style = {leftStyle}>{this.props.redScore}</div>
 					<div id = "blue" style = {rightStyle}>{this.props.blueScore}</div>
+				</div>
+				<div style = {pauseButton}>
+					
 				</div>
 
 				<div style = {controls}>{userinfo}</div>	
