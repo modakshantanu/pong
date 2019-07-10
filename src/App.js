@@ -116,6 +116,8 @@ class App extends Component {
 		this.initBots();
 		
 		this.resetPositions();
+
+	
 	}
 
 	reset2v2() {
@@ -140,6 +142,7 @@ class App extends Component {
 		this.ball = new Ball({x:250, y: 250});
 		this.initBots();
 		this.resetPositions();
+		
 	}
 
 	reset3v3() {

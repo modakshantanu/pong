@@ -7,12 +7,12 @@ export class Bot {
 		this.walls = args.walls; // All other paddle ranges are treated as walls
 		this.output = {left:0,right:0};
 		this.waitTimer = 0;
-		this.lookAhead = 3; // Bot will only calculate the ball's trajectory upto 3 bounces into the future	
+		this.lookAhead = 10; // Bot will only calculate the ball's trajectory upto 3 bounces into the future	
 		this.debug = args.debug;
 	}
 
 	reset() {
-		this.waitTimer = 0;
+		this.waitTimer = -1;
 		this.output = {left:0,right:0};
 	}
 	calculateOutput(ball, paddle) {
@@ -28,7 +28,7 @@ export class Bot {
 		} else {
 			this.waitTimer = 0; // Just in case waittimer became negative
 		}
-
+		let piw = paddle.getInnerWall();
 		
 		// Temporary object to simulate the ball
 		let b = {
@@ -82,7 +82,7 @@ export class Bot {
 
 
 			
-			let intersection = checkIntersection(paddle.x1,paddle.y1,paddle.x2,paddle.y2, b1.x, b1.y, b2.x, b2.y);
+			let intersection = checkIntersection(piw.x1,piw.y1,piw.x2,piw.y2, b1.x, b1.y, b2.x, b2.y);
 			if (intersection.type === 'intersecting') {
 				// Intersection with the paddle has been found
 				// Now we need to output either left, right, or no move at all
@@ -94,7 +94,7 @@ export class Bot {
 				}
 
 				// If the paddle is close enough, do nothing
-				if (distance2d(current.x, current.y, intersection.point.x, intersection.point.y) < 4) {
+				if (distance2d(current.x, current.y, intersection.point.x, intersection.point.y) < 8) {
 					this.output = {left:0,right:0};
 				
 					return;

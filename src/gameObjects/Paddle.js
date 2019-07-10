@@ -167,6 +167,21 @@ export default class Paddle {
 	}
 
 	getInnerWall() {
-		console.log(this.tiltAngle);
+	
+		let offset = rotateVector({
+			x: this.depth/2,
+			y: 0
+		},this.tiltAngle);
+		if (distance2d(this.x1,this.y1,250,250) < distance2d(this.x1+offset.x, this.y1+offset.y,250,250)) {
+			
+			offset.x *= -1; offset.y *= -1;
+		}
+		return {
+			x1: this.x1 + offset.x,
+			y1: this.y1 + offset.y,
+			x2: this.x2 + offset.x,
+			y2: this.y2 + offset.y
+		}
+		
 	}
 }
