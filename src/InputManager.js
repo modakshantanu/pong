@@ -13,6 +13,12 @@ const KEY = {
 	EQUAL: 187, // Blue 1 right
  };
 
+ const codeMap = {
+	"187": "=",
+	"186": ";",
+	"189": "-",
+ }
+
  export default class InputManager {
 
 	bindKeys() {
@@ -38,7 +44,8 @@ const KEY = {
 	// It is always updated in real time once the eventListener is added
 	handleKeys(value, e){
 		let keys = this.pressedKeys;
-		switch (e.key) {
+		
+		switch (e.key == "Unidentified" ? codeMap[e.keyCode] : e.key) {
 			case '1': 
 				keys.red1.left = value;
 				break;
@@ -74,6 +81,7 @@ const KEY = {
 		
 				break;
 			case '=':
+				
 				keys.blue1.right = value;
 				break;
 				default:
