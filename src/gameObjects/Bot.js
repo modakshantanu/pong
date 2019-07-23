@@ -8,7 +8,8 @@ export class Bot {
 		this.output = {left:0,right:0};
 		this.waitTimer = 0;
 		this.lookAhead = 10; // Bot will only calculate the ball's trajectory upto 3 bounces into the future	
-		this.debug = args.debug;
+		this.debug = args.debug; 
+		this.curve = args.curve;
 	}
 
 	reset() {
@@ -22,7 +23,7 @@ export class Bot {
 		// once after every impact off another paddle
 		//console.log(this.waitTimer);
 		
-		if (this.waitTimer > 0) {
+		if (this.waitTimer > 0 && !this.curve) {
 			this.waitTimer--;
 			return;
 		} else {

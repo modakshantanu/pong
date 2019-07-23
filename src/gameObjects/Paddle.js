@@ -37,7 +37,7 @@ export default class Paddle {
 
 	}
 
-	getReflection(ball) {
+	getReflection(ball,curve) {
 		
 		// First, figure out which edge the ball collided with. 
 
@@ -81,10 +81,17 @@ export default class Paddle {
 		if (paddleVelocity.x === 0 && paddleVelocity.y === 0) {
 			return ref;
 		}
+
+
 	
 
 		// Deflect the ball further based on the movvement of the paddle
-		ref = rotateVector(ref, angleBetween(ref,paddleVelocity)*0.2);
+		ref = rotateVector(ref, angleBetween(ref,paddleVelocity)*0.2 );
+
+		if (curve) {
+			let angle = angleBetween(paddleVelocity,{x:ball.dx, y:ball.dy});
+			ball.dr += angle/20;
+		}
 		return ref;
 	}
 

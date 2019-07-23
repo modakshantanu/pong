@@ -1,3 +1,5 @@
+import { rotateVector } from "../utils/2d";
+
 class Ball {
 	constructor(args) {
         this.x = args.x; 
@@ -7,7 +9,7 @@ class Ball {
         this.radius = 10;
         this.delete = false; // Whether the ball should be deleted in the next frame
         this.r = 0;
-        this.dr = 0.1;
+        this.dr = 0;
         this.color = "#000";
 
 
@@ -19,6 +21,9 @@ class Ball {
         this.y += this.dy;
         this.r += this.dr;
 
+        if (state.settings.curveball) {
+            ({x: this.dx, y:this.dy} = rotateVector({x:this.dx, y:this.dy}, this.dr/10));
+        }
 
         var ctx = state.context;
         ctx.save();

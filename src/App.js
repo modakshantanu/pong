@@ -54,7 +54,7 @@ class App extends Component {
 		this.reset2v2 = this.reset2v2.bind(this);
 		this.reset3v3 = this.reset3v3.bind(this);
 		this.resetPositions = this.resetPositions.bind(this);
-		this.renderPaddles = this.renderPaddles.bind(this);
+		this.renderPaddle1s = this.renderPaddles.bind(this);
 		this.changeSettings = this.changeSettings.bind(this);
 		this.initBots = this.initBots.bind(this);
 		this.createParticle = this.createParticle.bind(this);
@@ -82,7 +82,7 @@ class App extends Component {
 			if (this.state.settings.AI[i]) {
 				let modifiedWalls = [...goalWalls]; // Create a new array with all walls except that player's goal
 				modifiedWalls.splice(i,1);
-				this.bots.push(new Bot({walls:modifiedWalls}));
+				this.bots.push(new Bot({walls:modifiedWalls,curve:this.state.settings.curveball}));
 				
 			} else {
 				this.bots.push(null); // Dummy to make the array index match other indices (0-5)
@@ -253,7 +253,7 @@ class App extends Component {
 
 			// Now hitboxArr contains the points in correct format [x1,y1,x2,y2...]
 			if (intersects.circlePolygon(this.ball.x, this.ball.y,this.ball.radius,hitboxArr)) {
-				let newVelocity = paddle.getReflection(this.ball);
+				let newVelocity = paddle.getReflection(this.ball,this.state.settings.curveball);
 				this.ball.dx = newVelocity.x;
 				this.ball.dy = newVelocity.y;
 				this.ball.color = paddle.color;
