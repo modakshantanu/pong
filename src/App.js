@@ -11,6 +11,7 @@ import { rotateVector } from './utils/2d';
 import { randomBetween } from './utils/math';
 import { Bot } from './gameObjects/Bot';
 import Settings from './components/Settings';
+import { Particle } from './gameObjects/Particle';
 
 
 
@@ -42,7 +43,8 @@ class App extends Component {
 			blueScore:0,
 			gameMode:1, // Number of players on each side,
 			settings: {
-				AI:[false,false,false,false,false,false]
+				AI:[false,false,false,false,false,false],
+				curveball:true,
 			}
 
 		}
@@ -55,6 +57,7 @@ class App extends Component {
 		this.renderPaddles = this.renderPaddles.bind(this);
 		this.changeSettings = this.changeSettings.bind(this);
 		this.initBots = this.initBots.bind(this);
+		this.createParticle = this.createParticle.bind(this);
 		
 	}
 
@@ -90,6 +93,7 @@ class App extends Component {
 
 	reset1v1() {
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:1});
+		this.particles = [];
 		this.walls = [
 			new Wall({x1:0,y1:100,x2:500,y2:100}),
 			new Wall({x1:0,y1:399,x2:500,y2:399}),
@@ -104,15 +108,15 @@ class App extends Component {
 		];
 
 		this.paddles = [
-			new Paddle({x1:10, y1:100, x2:10, y2:400}),
+			new Paddle({x1:10, y1:100, x2:10, y2:400,color:"red"}),
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}), // 
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}), // These 4 paddles are dummy paddles, so the mapping from player -> paddle index
-			new Paddle({x1:490,y1:400,x2:490,y2:100}),
+			new Paddle({x1:490,y1:400,x2:490,y2:100,color:"blue"}),
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}), // is consistent
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}), //
 
 		]
-		this.ball = new Ball({x:250, y: 250});
+		this.ball = new Ball({x:250, y: 250,});
 		this.initBots();
 		
 		this.resetPositions();
@@ -121,6 +125,7 @@ class App extends Component {
 	}
 
 	reset2v2() {
+		this.particles = [];
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:2});
 		this.walls = [];
 		this.goals = [
@@ -146,6 +151,7 @@ class App extends Component {
 	}
 
 	reset3v3() {
+		this.particles = [];
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:3});
 		this.walls = [];
 		// Generate the hexagonal coordinates programatically since its easier than hardcoding
@@ -163,11 +169,11 @@ class App extends Component {
 			let v2 = rotateVector({x:-240,y:0},(i+1)*Math.PI/3);
 			
 			
-			this.paddles.push(new Paddle({x1: v1.x + 250,y1:v1.y + 250, x2:v2.x + 250, y2:v2.y + 250}));
+			this.paddles.push(new Paddle({x1: v1.x + 250,y1:v1.y + 250, x2:v2.x + 250, y2:v2.y + 250, color:"red"}));
 		}
 		for (let i = 0; i < 3; i++) {
 			let {x1,y1,x2,y2} = this.paddles[2-i];
-			this.paddles.push(new Paddle({x1:x1, y1: 500-y1, x2:x2, y2:500-y2}))
+			this.paddles.push(new Paddle({x1:x1, y1: 500-y1, x2:x2, y2:500-y2,color:"blue"}))
 		}
 		
 		this.ball = new Ball({x:250, y: 250});
@@ -176,7 +182,7 @@ class App extends Component {
 	}
 
 	resetPositions() {
-
+		this.particles = [];
 		let randomAngle = this.state.gameMode === 1? randomBetween(-Math.PI/4,Math.PI/4): randomBetween(0,2*Math.PI);
 		let initialBallVelocity = rotateVector({x:3,y:0},randomAngle);
 
@@ -193,8 +199,6 @@ class App extends Component {
 		})
 	}
 
-
-
 	renderPaddles() {
 
 		let keys = this.state.input.pressedKeys;
@@ -208,6 +212,10 @@ class App extends Component {
 		this.paddles[5].render(this.state, b[5]? b[5].output:keys.blue3);
 		
 		
+	}
+
+	createParticle(args) {
+		this.particles.push(new Particle(args));
 	}
 
 	draw() {
@@ -224,6 +232,14 @@ class App extends Component {
 		this.goals.forEach(goal => {
 			goal.render(this.state);
 		})
+		
+		for (let i = this.particles.length - 1; i >= 0; i--) {
+			if (this.particles[i].delete) {
+				this.particles.splice(i,1);
+			} else {
+				this.particles[i].render(this.state);
+			}
+		}
 
 		// Collision between ball and paddles
 		this.paddles.forEach(paddle => {
@@ -240,8 +256,7 @@ class App extends Component {
 				let newVelocity = paddle.getReflection(this.ball);
 				this.ball.dx = newVelocity.x;
 				this.ball.dy = newVelocity.y;
-				this.ball.x += this.ball.dx;
-				this.ball.y += this.ball.dy;
+				this.ball.color = paddle.color;
 			}
 			
 		})
@@ -252,8 +267,7 @@ class App extends Component {
 				let newVelocity = wall.getReflection(this.ball);
 				this.ball.dx = newVelocity.x;
 				this.ball.dy = newVelocity.y;
-				this.ball.x += this.ball.dx;
-				this.ball.y += this.ball.dy;
+				
 			}
 			
 		})
@@ -298,6 +312,7 @@ class App extends Component {
 
 		this.renderPaddles();
 		this.ball.render(this.state);
+		this.createParticle({x:this.ball.x, y:this.ball.y, color:this.ball.color})
 
 		ctx.restore();
 		if (this.state.gameState === GameState.RUNNING) 

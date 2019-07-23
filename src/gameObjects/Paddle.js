@@ -12,7 +12,7 @@ export default class Paddle {
 		this.x2 = args.x2 || 0;
 		this.y2 = args.y2 || 0;
 		this.hidden = args.hidden;
-	
+		this.color = args.color || "#000";
 		
 		// Depth and width are dimensions of the paddle
 		this.depth = args.depth || 10;
@@ -131,8 +131,6 @@ export default class Paddle {
 		ctx.fillRect(-this.depth/2,-this.width/2,this.depth,this.width);
 		
 		ctx.restore();
-		
-
 	}
 
 	getHitbox() {
