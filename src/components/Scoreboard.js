@@ -1,5 +1,5 @@
-import React from 'react'
-
+import React from 'react';
+import {Button} from 'react-bootstrap';
 
 const controls = {
 	height:0,
@@ -11,7 +11,9 @@ const controls = {
 	float: "left"
 }
 
-const userinfo = (<div className = {controls}><h2 align = "left">CONTROLS INFO</h2>
+const userInfo = (
+
+<div className = {controls}><h2 align = "left">CONTROLS INFO</h2>
 		<div align = "left">
 			<p> RED 1  : 1  --> LEFT / UP  &&  2   --> RIGHT / DOWN  </p> 
 			<p> RED 2  : S  --> LEFT  &&  D --> RIGHT </p>
@@ -20,7 +22,12 @@ const userinfo = (<div className = {controls}><h2 align = "left">CONTROLS INFO</
 			<p> BLUE 2 : L --> LEFT  &&  ';' --> RIGHT  </p> 
 			<p> BLUE 1 : -  --> LEFT  &&  =   --> DOWN  </p>
 		</div>
- </div>);
+ </div>
+
+ );
+
+
+
 
 const mainStyle = {
 	height:50,
@@ -62,22 +69,52 @@ const pauseButton = {
 
 export class Scoreboard extends React.Component {
 
-	
+	state = { display : false}
+
+	handleOnClick = () => { 
+		this.setState((state) => ({display: !state.display}));
+		// return (
+		// 	<div>
+		// 	{userInfo}
+		// 	</div>
+		// );
+	}
+
 
 	render() {
+
+		const userInfo = (
+
+			<div className = {controls}><h2 align = "left">CONTROLS INFO</h2>
+					<div align = "left">
+						<p> RED 1  : 1  --> LEFT / UP  &&  2   --> RIGHT / DOWN  </p> 
+						<p> RED 2  : S  --> LEFT  &&  D --> RIGHT </p>
+						<p> RED 3  : V  --> LEFT  &&  B --> RIGHT  </p> 
+						<p> BLUE 3 : N  --> LEFT  &&  M   --> RIGHT </p>
+						<p> BLUE 2 : L --> LEFT  &&  ';' --> RIGHT  </p> 
+						<p> BLUE 1 : -  --> LEFT  &&  =   --> DOWN  </p>
+					</div>
+			 </div>
+			
+			 );
+
 		return (
 			<div>
 				<div style = {mainStyle}>
 					<div id = "red" style = {leftStyle}>{this.props.redScore}</div>
 					<div id = "blue" style = {rightStyle}>{this.props.blueScore}</div>
 				</div>
-				<div style = {pauseButton}>
-					
-				</div>
+				<div style = {pauseButton}></div>	
 
-				<div style = {controls}>{userinfo}</div>	
-			
+				<div>
+				{this.state.display? userInfo:""}	
+				<div>
+					<Button variant = "primary" onClick = {this.handleOnClick}>
+						Instructions
+					</Button>
+				</div>
+				</div>
 			</div>
-		)
+		);
 	}
 }
