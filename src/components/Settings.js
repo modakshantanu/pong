@@ -2,6 +2,7 @@ import React from 'react';
 
 const dropdown = {
 	position: "fixed",
+	
 
 	bottom:0,
 	right: 0
@@ -101,7 +102,7 @@ export default class Settings extends React.Component {
 		return(
 			<div style = {dropdown}>
 				{this.state.opened? content:""}
-				<div style = {buttonStyle} onClick = {this.toggleDropdown}>Settings {this.state.opened? "↓":"↑"} </div>
+				<button style = {buttonStyle} onClick = {this.toggleDropdown}>Settings {this.state.opened? "↓":"↑"} </button>
 				
 			</div>
 		)

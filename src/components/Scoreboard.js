@@ -1,15 +1,17 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
 
-const controls = {
-	height:0,
-	width:400,
-	margin:"auto",
-	padding:20,
-	alignItems: "left",
-	justifyContent: "left",
-	float: "left"
-}
+// const controls = {
+// 	height:0,
+// 	width:400,
+// 	margin:"auto",
+// 	padding:20,
+// 	alignItems: "left",
+// 	justifyContent: "left",
+// 	float: "left"
+// }
+
+
 
 
 const buttonStyle = {
@@ -18,9 +20,11 @@ const buttonStyle = {
 	border:"2px solid blue",
 	margin:"2px",
 	textAlign: "center",
+	fontSize : 15,
 	borderRadius:"2",
 	userSelect:"none",
-	position: "fixed",
+	position: "auto",
+	
 
 }
 
@@ -32,7 +36,7 @@ const mainStyle = {
 	width:100,
 	margin:"auto",
 	padding:10,
-	
+	float : "center"
 }
 
 const leftStyle = {
@@ -63,6 +67,17 @@ const pauseButton = {
 
 }
 
+const instructions = { 
+	margin : "auto",
+	height:40,
+	width: 400,
+	padding:40,
+	alignItems: "left",
+	justifyContent: "left",
+	float: "left",
+
+}
+
 
 
 export class Scoreboard extends React.Component {
@@ -83,7 +98,7 @@ export class Scoreboard extends React.Component {
 
 		const userInfo = (
 
-			<div className = {controls}><h2 align = "left">CONTROLS INFO</h2>
+			<div ><h2 align = "left">CONTROLS INFO</h2>
 					<div align = "left">
 						<p> RED 1  : 1  --> LEFT / UP  &&  2   --> RIGHT / DOWN  </p> 
 						<p> RED 2  : S  --> LEFT  &&  D --> RIGHT </p>
@@ -104,10 +119,10 @@ export class Scoreboard extends React.Component {
 				</div>
 				<div style = {pauseButton}></div>	
 
-				<div>
+				<div style = {instructions} >
 				{this.state.display? userInfo:""}	
 				<div>
-					<Button style = { buttonStyle} variant = "primary" onClick = {this.handleOnClick}>
+					<Button style = {buttonStyle} variant = "primary" onClick = {this.handleOnClick}>
 						Instructions
 					</Button>
 				</div>

@@ -12,9 +12,35 @@ import { randomBetween } from './utils/math';
 import { Bot } from './gameObjects/Bot';
 import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
+// import logo from '../src/newimage.jpg';
+
+
+// const Hero = ( ) => {
+// 	// const width = window.innerWidth;
+// 	// const height = window.innerHeight;
+	
+// 	const style = {
+// 	  'position': 'fixed',
+// 	  'top': 0, 
+// 	  'left': 0,
+// 	  'min-width': '100%',
+// 	  'min-height': '100%'
+
+// 	}
+// 	return(
+// 	  <div style={style}>
+// 		<img alt = 'hero' src={logo} style={style}/>
+// 	  </div>
+// 	)
+//   }
+
+const backgroundStyling = { 
+
+	backgroundColor : "	#FFFF33"
 
 
 
+}
 
 const GameState = {
 	STOPPED:0,
@@ -339,7 +365,9 @@ class App extends Component {
 	}
 	render() {
 		return (
-			<div>
+			<div style = {backgroundStyling}>
+			{/* <Hero/> */}
+			<div >
 				<h1>Pong++</h1>
 				
 				<canvas ref = "canvas" width = "501" height = "501"/>
@@ -353,6 +381,7 @@ class App extends Component {
 				<Settings settings = {this.state.settings} changeHandler = {this.changeSettings}/>
 
 			
+			</div>
 			</div>
 		)
 	}
