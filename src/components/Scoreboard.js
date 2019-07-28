@@ -11,20 +11,18 @@ const controls = {
 	float: "left"
 }
 
-const userInfo = (
 
-<div className = {controls}><h2 align = "left">CONTROLS INFO</h2>
-		<div align = "left">
-			<p> RED 1  : 1  --> LEFT / UP  &&  2   --> RIGHT / DOWN  </p> 
-			<p> RED 2  : S  --> LEFT  &&  D --> RIGHT </p>
-			<p> RED 3  : V  --> LEFT  &&  B --> RIGHT  </p> 
-			<p> BLUE 3 : N  --> LEFT  &&  M   --> RIGHT </p>
-			<p> BLUE 2 : L --> LEFT  &&  ';' --> RIGHT  </p> 
-			<p> BLUE 1 : -  --> LEFT  &&  =   --> DOWN  </p>
-		</div>
- </div>
+const buttonStyle = {
+	width:"100px",
+	padding:"2px",
+	border:"2px solid blue",
+	margin:"2px",
+	textAlign: "center",
+	borderRadius:"2",
+	userSelect:"none",
+	position: "fixed",
 
- );
+}
 
 
 
@@ -109,7 +107,7 @@ export class Scoreboard extends React.Component {
 				<div>
 				{this.state.display? userInfo:""}	
 				<div>
-					<Button variant = "primary" onClick = {this.handleOnClick}>
+					<Button style = { buttonStyle} variant = "primary" onClick = {this.handleOnClick}>
 						Instructions
 					</Button>
 				</div>
