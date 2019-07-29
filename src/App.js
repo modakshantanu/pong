@@ -14,7 +14,7 @@ import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
 import Powerups from './components/Powerups';
 import {PowerupToken} from './gameObjects/PowerupToken'
-import { summarizers } from 'istanbul-lib-report';
+
 
 const backgroundStyling = { 
 
@@ -23,7 +23,7 @@ const backgroundStyling = {
 }
 
 const GameState = {
-	STOPPED:0,
+	PAUSED:0,
 	RUNNING:1,
 	GOAL_SCORED:2
 }
@@ -310,7 +310,17 @@ class App extends Component {
 	}
 
 	draw() {
+		
+
 		const ctx = this.state.context;
+
+		
+		if (this.state.gameState === GameState.PAUSED) {
+			ctx.font = "30px Courier New";
+			ctx.fillText("PAUSED", 200,250);
+			animationFrameId = requestAnimationFrame(this.draw);
+			return;
+		}
 		ctx.save();
 		ctx.fillStyle = "#FFF";
 		ctx.translate(0.5,0.5);
@@ -476,8 +486,13 @@ class App extends Component {
 					<button id = "2v2" onClick = {this.reset2v2}>Reset 2v2</button>
 					<button id = "3v3" onClick = {this.reset3v3}>Reset 3v3</button>
 					
-					<button>Reset Rally</button>
-				<button>Pause</button>
+					<button onClick = {this.resetPositions}>Reset Rally</button>
+				<button onClick = {() => {
+					this.setState((state) => {
+						if (state.gameState !== 2)
+						return {gameState: 1 - state.gameState}
+					})
+				}}>{this.state.gameState===0? "Play" : "Pause"}</button>
 				</center>
 				<Settings settings = {this.state.settings} changeHandler = {this.changeSettings}/>
 
