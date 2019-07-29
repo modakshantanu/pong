@@ -11,7 +11,7 @@ class Ball {
         this.r = 0;
         this.dr = 0;
         this.color = "#000";
-
+        this.boomerMode = false;
 
     }
 
@@ -20,7 +20,15 @@ class Ball {
         this.x += this.dx;
         this.y += this.dy;
         this.r += this.dr;
+        if (this.boomerMode) {
+            this.x += this.dx*0.5;
+            this.y += this.dy*0.5;
+        }
 
+        // fix slow speed bug
+        if( Math.sqrt(this.dx ** 2 + this.dy ** 2) < 3 ) {
+            this.dx *= 1.2; this.dy *= 1.2;
+        }
         if (state.settings.curveball) {
             ({x: this.dx, y:this.dy} = rotateVector({x:this.dx, y:this.dy}, this.dr/10));
         }

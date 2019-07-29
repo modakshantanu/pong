@@ -1,6 +1,7 @@
 
 import {distance2d ,rotateVector, reflection, angleBetween} from '../utils/2d';
 import intersects from 'intersects';
+import { randomBetween } from '../utils/math';
 
 // Class that handles drawing the paddle
 export default class Paddle {
@@ -34,6 +35,38 @@ export default class Paddle {
 		// Ex. if a paddle is 10px wide and the total length is 100px, min and max pos will be 5% and 95% 
 		this.minPosition = 100*(this.width/this.slidinglength)/2;
 		this.maxPosition = 100*(1 - this.width/this.slidinglength/2);
+		this.powerup = 0;	
+		this.powerupTimer = 0;
+	}
+
+	resetPowerup() {
+	
+		this.powerup = 0;
+		this.width = 50;
+		this.powerupTimer = 0;
+		this.minPosition = 100*(this.width/this.slidinglength)/2;
+		this.maxPosition = 100*(1 - this.width/this.slidinglength/2);
+	}
+
+	bigPowerup() {
+		this.width = 100;
+		this.powerupTimer = 600;
+		this.powerup = 1;
+		this.minPosition = 100*(this.width/this.slidinglength)/2;
+		this.maxPosition = 100*(1 - this.width/this.slidinglength/2);
+	}
+
+	smallPowerup() {
+		this.width = 25;
+		this.powerupTimer = 600;
+		this.powerup = 2;
+		this.minPosition = 100*(this.width/this.slidinglength)/2;
+		this.maxPosition = 100*(1 - this.width/this.slidinglength/2);
+	}
+
+	boomerPowerup() {
+		this.powerupTimer = 400;
+		this.powerup = 3;
 
 	}
 
@@ -90,7 +123,7 @@ export default class Paddle {
 
 		if (curve) {
 			let angle = angleBetween(paddleVelocity,{x:ball.dx, y:ball.dy});
-			ball.dr += angle/20;
+			ball.dr += angle/20 + randomBetween(-0.1,0.1);
 		}
 		return ref;
 	}
@@ -99,6 +132,14 @@ export default class Paddle {
 		if (this.hidden) return;
 		var ctx = state.context;
 		
+		if (this.powerupTimer > 0) {
+			this.powerupTimer--;
+			
+		}
+		if (this.powerupTimer <= 0 && this.powerup !== 0) {
+			
+			this.resetPowerup();
+		}
 
 	
 		// Move the paddle based on keyboard input
@@ -130,8 +171,9 @@ export default class Paddle {
 		ctx.save();
 		ctx.translate(0.5,0.5);
 		ctx.strokeStyle = "#000000";
+
 		ctx.fillStyle = "#888888";
-		
+		if (this.powerup === 3) ctx.fillStyle = "#fe0";
 		ctx.translate(this.paddleCenterX, this.paddleCenterY);
 		ctx.rotate(this.tiltAngle );
 		// Draw paddle with fillRect()

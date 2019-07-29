@@ -65,7 +65,7 @@ export default class Powerups extends React.Component {
 			default:
 					redImg = none; break;
 		}
-		console.log(redImg);
+
 		switch(this.props.blue) {
 			case Powerup.NONE:
 				blueImg = none; break;

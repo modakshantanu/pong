@@ -13,7 +13,8 @@ import { Bot } from './gameObjects/Bot';
 import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
 import Powerups from './components/Powerups';
-import {Powerupp} from './gameObjects/Powerup'
+import {PowerupToken} from './gameObjects/PowerupToken'
+import { summarizers } from 'istanbul-lib-report';
 
 const backgroundStyling = { 
 
@@ -57,7 +58,7 @@ class App extends Component {
 			settings: {
 				AI:[false,false,false,false,false,false],
 				curveball:false,
-				powerups:false
+				powerups:true
 			},
 			redpower: Powerup.NONE,
 			bluepower: Powerup.NONE
@@ -73,7 +74,7 @@ class App extends Component {
 		this.changeSettings = this.changeSettings.bind(this);
 		this.initBots = this.initBots.bind(this);
 		this.createParticle = this.createParticle.bind(this);
-
+		
 		
 	}
 
@@ -81,10 +82,71 @@ class App extends Component {
 		this.state.input.bindKeys();
 		
 		const context = this.refs.canvas.getContext('2d'); // This is to get context
+		this.powerupTimer = 100022;
 		this.setState({context:context});		
 		this.reset1v1();
 		animationFrameId = requestAnimationFrame(this.draw); 
 
+
+	}
+
+	bluePowerupHandler(type) {
+
+		var targets = [];
+		if (type === 2) {
+			targets = [0,1,2];
+		} else targets = [3,4,5];
+
+		for (let i = 3; i > this.state.gameMode; i--) {
+			targets.splice(-1,1);
+		}
+
+		for (let i = targets.length - 1; i >= 0; i--) {
+			if (this.paddles[targets[i]].powerup !== 0) {
+				targets.splice(i,1);
+			}
+		}
+		this.setState({bluepower:0});
+		if (targets.length === 0) return;
+		
+		let rand = Math.floor(randomBetween(0, targets.length -0.000001));
+		let tgt = this.paddles[targets[rand]];
+		switch(type) {
+			case 1: tgt.bigPowerup(); break;
+			case 2: tgt.smallPowerup(); break;
+			case 3: tgt.boomerPowerup(); break;
+			default: 
+		}
+
+	}
+
+	redPowerupHandler(type) {
+
+		var targets = [];
+		if (type === 2) {
+			targets = [3,4,5];
+		} else targets = [0,1,2];
+
+		for (let i = 3; i > this.state.gameMode; i--) {
+			targets.splice(-1,1);
+		}
+
+		for (let i = targets.length - 1; i >= 0; i--) {
+			if (this.paddles[targets[i]].powerup !== 0) {
+				targets.splice(i,1);
+			}
+		}
+		this.setState({redpower:0});
+		if (targets.length === 0) return;
+		
+		let rand = Math.floor(randomBetween(0, targets.length -0.000001));
+		let tgt = this.paddles[targets[rand]];
+		switch(type) {
+			case 1: tgt.bigPowerup(); break;
+			case 2: tgt.smallPowerup(); break;
+			case 3: tgt.boomerPowerup(); break;
+			default: 
+		}
 	}
 
 
@@ -110,7 +172,10 @@ class App extends Component {
 
 	reset1v1() {
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:1});
-		this.particles = []; this.powerups= [new Powerupp({})];
+		this.particles = []; this.powerups = [];
+		if (this.state.settings.powerups) {
+			this.powerupTimer = randomBetween (200,300);
+		}
 		this.walls = [
 			new Wall({x1:0,y1:100,x2:500,y2:100}),
 			new Wall({x1:0,y1:399,x2:500,y2:399}),
@@ -199,7 +264,9 @@ class App extends Component {
 	}
 
 	resetPositions() {
+		this.powerups = [];
 		this.particles = [];
+		this.setState({redpower:0, bluepower:0});
 		let randomAngle = this.state.gameMode === 1? randomBetween(-Math.PI/4,Math.PI/4): randomBetween(0,2*Math.PI);
 		let initialBallVelocity = rotateVector({x:3,y:0},randomAngle);
 
@@ -209,7 +276,14 @@ class App extends Component {
 			initialBallVelocity.y *= -1;
 		}
 		this.ball = new Ball({x: 250, y: 250,dx: initialBallVelocity.x, dy: initialBallVelocity.y});
-		this.paddles.forEach(paddle => paddle.position = 50);
+		this.paddles.forEach(paddle => {
+			paddle.position = 50;
+			paddle.resetPowerup();
+
+
+
+
+		})
 		this.bots.forEach(b => {
 			if (b) // To bypass the null elements in bots array
 				b.reset();
@@ -275,6 +349,9 @@ class App extends Component {
 				this.ball.dx = newVelocity.x;
 				this.ball.dy = newVelocity.y;
 				this.ball.color = paddle.color;
+				if (paddle.powerup === 3) {
+					this.ball.boomerMode = true;
+				} else this.ball.boomerMode = false;
 			}
 			
 		})
@@ -288,6 +365,20 @@ class App extends Component {
 				
 			}
 			
+		})
+
+		// Collision between ball and powerup 
+		this.powerups.forEach((p,i) => {
+			if (intersects.boxCircle(p.x-10,p.y-10,20,20,this.ball.x, this.ball.y, this.ball.radius)) {
+				if(this.ball.color === "red" && this.state.redpower === 0) {
+					this.setState( {redpower : Math.floor(randomBetween(1.0000001,3.99999999))});
+				}
+				else if(this.ball.color === "blue" && this.state.bluepower === 0) {
+					this.setState( {bluepower : Math.floor(randomBetween(1.0000001,3.99999999))});
+				}
+				
+				this.powerups.splice(i,1);
+			}
 		})
 
 
@@ -329,8 +420,23 @@ class App extends Component {
 		});
 
 		this.renderPaddles();
+		if (this.state.input.pressedKeys.redpower && this.state.redpower !== 0) {
+			this.redPowerupHandler(this.state.redpower);
+		}
+		if (this.state.input.pressedKeys.bluepower && this.state.bluepower !== 0) {
+			this.bluePowerupHandler(this.state.bluepower);
+
+		}
 		this.ball.render(this.state);
 		this.createParticle({x:this.ball.x, y:this.ball.y, color:this.ball.color})
+		if (this.state.settings.powerups) {
+			if (this.powerupTimer > 0) this.powerupTimer--;
+			else {
+				this.powerupTimer = randomBetween(200,300);
+				if (this.powerups.length < 3) this.powerups.push(new PowerupToken({}));
+			}
+		}
+
 
 		ctx.restore();
 		if (this.state.gameState === GameState.RUNNING) 
@@ -383,5 +489,7 @@ class App extends Component {
 
 	
 }
+
+
 
 export default App;
