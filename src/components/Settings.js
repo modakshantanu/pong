@@ -19,7 +19,7 @@ const categoryHeader = {
 const dropdownContent= {
  
   	position: "absolute",
-	right:0,bottom:30,
+	right:10,bottom:30,
 
 	width:300,
 	minHeight:150,
@@ -40,7 +40,8 @@ const buttonStyle = {
 	userSelect:"none",
 	position: "fixed",
 	bottom:0,
-	right: 0
+	right: 0,
+	fontSize : 15
 
 
 }
