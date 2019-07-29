@@ -55,7 +55,7 @@ const leftStyle = {
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "center",
-	boxShadow:"0px 0px 0px 10px red inset",
+	boxShadow:"0px 0px 0px 11px red inset",
 	
 
 }
@@ -76,7 +76,7 @@ const rightStyle = {
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "center",
-	boxShadow:"0px 0px 0px 10px blue inset"
+	boxShadow:"0px 0px 0px 11px blue inset"
 }
 
 
@@ -135,91 +135,114 @@ export class Scoreboard extends React.Component {
 
 			<div style = { dropDownContent}>
 			
-			<h2 align = "centre">CONTROLS INFO</h2>
+			<h2 align = "centre">{'	Controls '}</h2>
 					
 					<div align = "left">
 					<span style = { {display : "inline-block" , float : " centre" , margin : 10}}>
 					<div >
-						 RED 1 
+						Red 1 
 					</div>
 						<span style = {leftNumberStyle}>
-						<Key  content = "1"/>   
+						<Key  content = "1" color = "red"/>   
 						</span>
 
 						<span style = {rightNumberStyle}>
-						<Key  content = "2"/>
+						<Key  content = "2" color = "red"/>
 						</span>
 					</span>
 
 					
 					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
 					<div >
-						 RED 2 
+						 Red 2 
 					</div>
 						<span style = {leftNumberStyle}>
-						<Key  content = "S"/>   
+						<Key  content = "S" color = "red"/>   
 						</span>
 
 						<span style = {rightNumberStyle}>
-						<Key  content = "D"/>
+						<Key  content = "D" color = "red"/>
 						</span>
 					</span>
 
 
 					<span style = { {display : "inline-block" , float : " centre" , margin  : 10}}>
 					<div >
-						 RED 3 
+						 Red 3 
 					</div>
 						<span style = {leftNumberStyle}>
-						<Key  content = "V"/>   
+						<Key  content = "V" color = "red"/>   
 						</span>
 
 						<span style = {rightNumberStyle}>
-						<Key  content = "B"/>
+						<Key  content = "B" color = "red"/>
 						</span>
 					</span>
+					<span style = { {display : "inline-block" , float : " centre" , margin  : 10}}>
+					
+					</span>
 
+
+
+					
+
+				
+
+					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
+					<div >
+						 Blue 1  
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  color = "blue" content = "-"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = "=" color = "blue"/>
+						</span>
+					</span>
+					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
+					<div >
+						 Blue 2  
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  content = "L" color = "blue"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = ";" color = "blue"/>
+						</span>
+					</span>
 
 
 					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
 					<div >
-						 BLUE 3 
+						 Blue 3 
 					</div>
 						<span style = {leftNumberStyle}>
-						<Key  content = "N"/>   
+						<Key  content = "N" color = "blue"/>   
 						</span>
 
 						<span style = {rightNumberStyle}>
-						<Key  content = "M"/>
-						</span>
-					</span>
-
-					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
-					<div >
-						 BLUE 2  
-					</div>
-						<span style = {leftNumberStyle}>
-						<Key  content = "L"/>   
-						</span>
-
-						<span style = {rightNumberStyle}>
-						<Key  content = ";"/>
+						<Key  content = "M" color = "blue"/>
 						</span>
 					</span>
 
 
-					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
-					<div >
-						 BLUE 1  
-					</div>
-						<span style = {leftNumberStyle}>
-						<Key  style = { {boxShadow:"0px 0px 0px 10px red inset"}} content = "-"/>   
-						</span>
+				
 
-						<span style = {rightNumberStyle}>
-						<Key  content = "="/>
-						</span>
-					</span>
+					</div>
+					<div>
+						To play, select your desired settings, and press one of the reset buttons to choose the number of players. Controls are shown above.
+					</div><hr/>
+					<div>
+						In a 1v1 game, the players playing are Red 1 and Blue 1. For 2v2, it's Red 1 and Red 2 vs Blue 1 and Blue 2. Similar for 3v3
+					</div><hr/>
+					<div>
+						When playing with powerups, hit the ball over a green square to collect a powerup. Press '3' for Red team or '0' for blue team to use the powerup
+					</div>
+					<hr/>
+					<div>
+
 					</div>
 			 </div>
 			

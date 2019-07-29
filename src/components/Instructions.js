@@ -8,7 +8,6 @@ const boxStyle = {
 	display: "inline-block",
 	alignItems: "center",
 	justifyContent: "center",
-	boxShadow:"0px 0px 0px 10px red inset",
     textAlign : "center",
     padding : 0,    
     border :  "0.1em solid black",
@@ -23,7 +22,7 @@ export default class Key extends React.Component {
     render () { 
 
         return ( 
-            <div style = {boxStyle}>
+            <div style = {{...boxStyle, background: this.props.color, color: "white"}}>
             
             {this.props.content}
             </div>
