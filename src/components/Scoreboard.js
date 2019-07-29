@@ -12,6 +12,26 @@ import {Button} from 'react-bootstrap';
 // }
 
 
+const dropDown = {
+	position: "fixed",
+	bottom:0,
+	left: 0
+
+}
+
+const dropDownContent= {
+ 
+position: "absolute",
+  left:10,bottom:50,
+
+  width:300,
+  minHeight:150,
+  border:"2px solid blue",
+  background: "	#00FF00",
+	zIndex: "1",
+}
+
+
 
 
 const buttonStyle = {
@@ -23,7 +43,7 @@ const buttonStyle = {
 	fontSize : 15,
 	borderRadius:"2",
 	userSelect:"none",
-	position: "auto",
+	position: "",
 	
 
 }
@@ -67,16 +87,16 @@ const pauseButton = {
 
 }
 
-const instructions = { 
-	margin : "auto",
-	height:40,
-	width: 400,
-	padding:40,
-	alignItems: "left",
-	justifyContent: "left",
-	float: "left",
+// const instructions = { 
+// 	margin : "auto",
+// 	height:40,
+// 	width: 400,
+// 	padding:40,
+// 	alignItems: "left",
+// 	justifyContent: "left",
+// 	float: "left",
 
-}
+// }
 
 
 
@@ -98,7 +118,7 @@ export class Scoreboard extends React.Component {
 
 		const userInfo = (
 
-			<div ><h2 align = "left">CONTROLS INFO</h2>
+			<div style = { dropDownContent}><h2 align = "left">CONTROLS INFO</h2>
 					<div align = "left">
 						<p> RED 1  : 1  --> LEFT / UP  &&  2   --> RIGHT / DOWN  </p> 
 						<p> RED 2  : S  --> LEFT  &&  D --> RIGHT </p>
@@ -119,7 +139,7 @@ export class Scoreboard extends React.Component {
 				</div>
 				<div style = {pauseButton}></div>	
 
-				<div style = {instructions} >
+				<div style = {dropDown} >
 				{this.state.display? userInfo:""}	
 				<div>
 					<Button style = {buttonStyle} variant = "primary" onClick = {this.handleOnClick}>
