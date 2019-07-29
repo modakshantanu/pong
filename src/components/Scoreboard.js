@@ -117,7 +117,7 @@ export class Scoreboard extends React.Component {
 					<div id = "red" style = {leftStyle}>{this.props.redScore}</div>
 					<div id = "blue" style = {rightStyle}>{this.props.blueScore}</div>
 				</div>
-				<div style = {pauseButton}></div>	
+			
 
 				<div style = {instructions} >
 				{this.state.display? userInfo:""}	

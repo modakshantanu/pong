@@ -12,6 +12,7 @@ import { randomBetween } from './utils/math';
 import { Bot } from './gameObjects/Bot';
 import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
+import Powerups from './components/Powerups';
 
 const backgroundStyling = { 
 
@@ -23,6 +24,13 @@ const GameState = {
 	STOPPED:0,
 	RUNNING:1,
 	GOAL_SCORED:2
+}
+
+const Powerup = {
+	NONE:0,
+	BIGPADDLE:1,
+	SMALLPADDLE:2,
+	BOOMER:3,
 }
 
 const Teams = {
@@ -62,6 +70,7 @@ class App extends Component {
 		this.changeSettings = this.changeSettings.bind(this);
 		this.initBots = this.initBots.bind(this);
 		this.createParticle = this.createParticle.bind(this);
+
 		
 	}
 
@@ -81,7 +90,8 @@ class App extends Component {
 		// A new array of all the goals, as well as walls
 		// Both goals and walls are treated as walls by bots
 		let goalWalls = this.goals.map(goal => new Wall({x1:goal.x1,y1:goal.y1,x2:goal.x2,y2:goal.y2})).concat(this.walls); 
-
+		this.redpower = Powerup.NONE;
+		this.bluepower = Powerup.NONE;
 		for (let i = 0; i < 6; i++) {
 			if (this.state.settings.AI[i]) {
 				let modifiedWalls = [...goalWalls]; // Create a new array with all walls except that player's goal
@@ -350,6 +360,7 @@ class App extends Component {
 				
 				<canvas ref = "canvas" width = "501" height = "501"/>
 				<Scoreboard redScore = {this.state.redScore} blueScore = {this.state.blueScore}/>
+				<Powerups/>
 				<center>Reset Game</center>
 				<center>
 					<button id = "1v1" onClick = {this.reset1v1}>1v1</button> 
