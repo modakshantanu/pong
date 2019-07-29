@@ -13,6 +13,7 @@ import { Bot } from './gameObjects/Bot';
 import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
 import Powerups from './components/Powerups';
+import {Powerupp} from './gameObjects/Powerup'
 
 const backgroundStyling = { 
 
@@ -28,8 +29,8 @@ const GameState = {
 
 const Powerup = {
 	NONE:0,
-	BIGPADDLE:1,
-	SMALLPADDLE:2,
+	BIG:1,
+	SMALL:2,
 	BOOMER:3,
 }
 
@@ -57,7 +58,9 @@ class App extends Component {
 				AI:[false,false,false,false,false,false],
 				curveball:false,
 				powerups:false
-			}
+			},
+			redpower: Powerup.NONE,
+			bluepower: Powerup.NONE
 
 		}
 
@@ -107,7 +110,7 @@ class App extends Component {
 
 	reset1v1() {
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:1});
-		this.particles = [];
+		this.particles = []; this.powerups= [new Powerupp({})];
 		this.walls = [
 			new Wall({x1:0,y1:100,x2:500,y2:100}),
 			new Wall({x1:0,y1:399,x2:500,y2:399}),
@@ -246,6 +249,7 @@ class App extends Component {
 		this.goals.forEach(goal => {
 			goal.render(this.state);
 		})
+		this.powerups.forEach(p => p.render(this.state));
 		
 		for (let i = this.particles.length - 1; i >= 0; i--) {
 			if (this.particles[i].delete) {
@@ -360,12 +364,14 @@ class App extends Component {
 				
 				<canvas ref = "canvas" width = "501" height = "501"/>
 				<Scoreboard redScore = {this.state.redScore} blueScore = {this.state.blueScore}/>
-				<Powerups/>
-				<center>Reset Game</center>
+				<Powerups red = {this.state.redpower} blue = {this.state.bluepower}/>
 				<center>
-					<button id = "1v1" onClick = {this.reset1v1}>1v1</button> 
-					<button id = "2v2" onClick = {this.reset2v2}>2v2</button>
-					<button id = "3v3" onClick = {this.reset3v3}>3v3</button>
+					<button id = "1v1" onClick = {this.reset1v1}>Reset 1v1</button> 
+					<button id = "2v2" onClick = {this.reset2v2}>Reset 2v2</button>
+					<button id = "3v3" onClick = {this.reset3v3}>Reset 3v3</button>
+					
+					<button>Reset Rally</button>
+				<button>Pause</button>
 				</center>
 				<Settings settings = {this.state.settings} changeHandler = {this.changeSettings}/>
 
