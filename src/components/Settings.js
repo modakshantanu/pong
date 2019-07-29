@@ -57,6 +57,9 @@ export default class Settings extends React.Component {
 
 		this.toggleDropdown = this.toggleDropdown.bind(this);
 		this.AICheckboxChange = this.AICheckboxChange.bind(this);
+		this.curveballChange = this.curveballChange.bind(this);
+		this.powerupsChange = this.powerupsChange.bind(this);
+	
 	}
 
 	toggleDropdown() {
@@ -66,6 +69,16 @@ export default class Settings extends React.Component {
 	AICheckboxChange(e) {
 		let newSettings = this.props.settings;
 		newSettings.AI[e.target.id] = !newSettings.AI[e.target.id];
+		this.props.changeHandler(newSettings);
+	}
+	curveballChange(e) {
+		let newSettings = this.props.settings;
+		newSettings.curveball = e.target.checked;
+		this.props.changeHandler(newSettings);
+	}
+	powerupsChange(e) {
+		let newSettings = this.props.settings;
+		newSettings.powerups = e.target.checked;
 		this.props.changeHandler(newSettings);
 	}
 
@@ -85,6 +98,8 @@ export default class Settings extends React.Component {
 			AICheckboxArray.push(e);
 		}
 
+		var curveballCheckbox = <input type = "checkbox" checked = {this.props.settings.curveball} onChange = {this.curveballChange}></input>
+		var powerupsCheckbox =  <input type = "checkbox" checked = {this.props.settings.powerups} onChange = {this.powerupsChange}></input>
 
 		const content = (
 			<div style = {dropdownContent}>
@@ -93,7 +108,10 @@ export default class Settings extends React.Component {
 					<div style = {{display:"flex" , flexDirection:"row"}}>
 						{AICheckboxArray}
 					</div>
-					<div>Settings are applied when you reset game</div>
+					<div style = {{fontSize:"13px"}}>AI Settings are applied when you reset game</div>
+					<div>Curveball {curveballCheckbox}</div>
+					<div>Powerups {powerupsCheckbox}</div>
+					
 				</div>
 			</div>
 		)

@@ -12,33 +12,10 @@ import { randomBetween } from './utils/math';
 import { Bot } from './gameObjects/Bot';
 import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
-// import logo from '../src/newimage.jpg';
-
-
-// const Hero = ( ) => {
-// 	// const width = window.innerWidth;
-// 	// const height = window.innerHeight;
-	
-// 	const style = {
-// 	  'position': 'fixed',
-// 	  'top': 0, 
-// 	  'left': 0,
-// 	  'min-width': '100%',
-// 	  'min-height': '100%'
-
-// 	}
-// 	return(
-// 	  <div style={style}>
-// 		<img alt = 'hero' src={logo} style={style}/>
-// 	  </div>
-// 	)
-//   }
 
 const backgroundStyling = { 
 
-	backgroundColor : "	#FFFF33"
-
-
+	backgroundColor : "	#fff"
 
 }
 
@@ -70,7 +47,8 @@ class App extends Component {
 			gameMode:1, // Number of players on each side,
 			settings: {
 				AI:[false,false,false,false,false,false],
-				curveball:true,
+				curveball:false,
+				powerups:false
 			}
 
 		}
@@ -163,11 +141,11 @@ class App extends Component {
 			new Goal({x1:-100,y1:-100,x2:-100,y2:-100}), 
 		];
 		this.paddles = [
-			new Paddle({x1:10,y1:250,x2:250,y2:10}),
-			new Paddle({x1:250,y1:10,x2:490,y2:250}),
+			new Paddle({x1:10,y1:250,x2:250,y2:10,color:"red"}),
+			new Paddle({x1:250,y1:10,x2:490,y2:250,color:"red"}),
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}),
-			new Paddle({x1:250,y1:490,x2:490,y2:250}),
-			new Paddle({x1:10,y1:250,x2:250,y2:490}),
+			new Paddle({x1:250,y1:490,x2:490,y2:250,color:"blue"}),
+			new Paddle({x1:10,y1:250,x2:250,y2:490,color:"blue"}),
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}),
 		]
 		this.ball = new Ball({x:250, y: 250});
