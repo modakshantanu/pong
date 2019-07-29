@@ -1,22 +1,11 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-
-// const controls = {
-// 	height:0,
-// 	width:400,
-// 	margin:"auto",
-// 	padding:20,
-// 	alignItems: "left",
-// 	justifyContent: "left",
-// 	float: "left"
-// }
-
+import Key from './Instructions.js';
 
 const dropDown = {
 	position: "fixed",
 	bottom:0,
 	left: 0
-
 }
 
 const dropDownContent= {
@@ -71,6 +60,16 @@ const leftStyle = {
 
 }
 
+const leftNumberStyle = {
+	margin : 0,
+	height: 20,
+	float: "left",
+	display: "flex",
+	alignItems: "center",
+	justifyContent: "center",
+
+}
+
 const rightStyle = {
 	marginLeft: "50%",
 	height:50,
@@ -78,6 +77,18 @@ const rightStyle = {
 	alignItems: "center",
 	justifyContent: "center",
 	boxShadow:"0px 0px 0px 10px blue inset"
+}
+
+
+
+const rightNumberStyle = {
+	margin : 10,
+	height:20,
+	display: "flex",
+	alignItems: "center",
+	justifyContent: "right",
+	// boxShadow:"0px 0px 0px 10px blue inset",
+	float : "center"
 }
 
 const pauseButton = {
@@ -116,16 +127,99 @@ export class Scoreboard extends React.Component {
 
 	render() {
 
+
+		
+
+
 		const userInfo = (
 
-			<div style = { dropDownContent}><h2 align = "left">CONTROLS INFO</h2>
+			<div style = { dropDownContent}>
+			
+			<h2 align = "left">CONTROLS INFO</h2>
+					
 					<div align = "left">
-						<p> RED 1  : 1  --> LEFT / UP  &&  2   --> RIGHT / DOWN  </p> 
-						<p> RED 2  : S  --> LEFT  &&  D --> RIGHT </p>
-						<p> RED 3  : V  --> LEFT  &&  B --> RIGHT  </p> 
-						<p> BLUE 3 : N  --> LEFT  &&  M   --> RIGHT </p>
-						<p> BLUE 2 : L --> LEFT  &&  ';' --> RIGHT  </p> 
-						<p> BLUE 1 : -  --> LEFT  &&  =   --> DOWN  </p>
+					<span style = { {display : "inline-block" , float : " centre"}}>
+					<div >
+						 RED 1 
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  content = "1"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = "2"/>
+						</span>
+					</span>
+
+					
+					<span style = { {display : "inline-block" , float : " centre"}}>
+					<div >
+						 RED 2 
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  content = "S"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = "D"/>
+						</span>
+					</span>
+
+
+					<span style = { {display : "inline-block" , float : " centre"}}>
+					<div >
+						 RED 3 
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  content = "V"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = "B"/>
+						</span>
+					</span>
+
+
+
+					<span style = { {display : "inline-block" , float : " centre"}}>
+					<div >
+						 BLUE 3 
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  content = "N"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = "M"/>
+						</span>
+					</span>
+
+					<span style = { {display : "inline-block" , float : " centre"}}>
+					<div >
+						 BLUE 2  
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  content = "L"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = ";"/>
+						</span>
+					</span>
+
+
+					<span style = { {display : "inline-block" , float : " centre"}}>
+					<div >
+						 BLUE 1  
+					</div>
+						<span style = {leftNumberStyle}>
+						<Key  content = "-"/>   
+						</span>
+
+						<span style = {rightNumberStyle}>
+						<Key  content = "="/>
+						</span>
+					</span>
 					</div>
 			 </div>
 			
