@@ -135,10 +135,10 @@ export class Scoreboard extends React.Component {
 
 			<div style = { dropDownContent}>
 			
-			<h2 align = "left">CONTROLS INFO</h2>
+			<h2 align = "centre">CONTROLS INFO</h2>
 					
 					<div align = "left">
-					<span style = { {display : "inline-block" , float : " centre"}}>
+					<span style = { {display : "inline-block" , float : " centre" , margin : 10}}>
 					<div >
 						 RED 1 
 					</div>
@@ -152,7 +152,7 @@ export class Scoreboard extends React.Component {
 					</span>
 
 					
-					<span style = { {display : "inline-block" , float : " centre"}}>
+					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
 					<div >
 						 RED 2 
 					</div>
@@ -166,7 +166,7 @@ export class Scoreboard extends React.Component {
 					</span>
 
 
-					<span style = { {display : "inline-block" , float : " centre"}}>
+					<span style = { {display : "inline-block" , float : " centre" , margin  : 10}}>
 					<div >
 						 RED 3 
 					</div>
@@ -181,7 +181,7 @@ export class Scoreboard extends React.Component {
 
 
 
-					<span style = { {display : "inline-block" , float : " centre"}}>
+					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
 					<div >
 						 BLUE 3 
 					</div>
@@ -194,7 +194,7 @@ export class Scoreboard extends React.Component {
 						</span>
 					</span>
 
-					<span style = { {display : "inline-block" , float : " centre"}}>
+					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
 					<div >
 						 BLUE 2  
 					</div>
@@ -208,12 +208,12 @@ export class Scoreboard extends React.Component {
 					</span>
 
 
-					<span style = { {display : "inline-block" , float : " centre"}}>
+					<span style = { {display : "inline-block" , float : " centre", margin : 10}}>
 					<div >
 						 BLUE 1  
 					</div>
 						<span style = {leftNumberStyle}>
-						<Key  content = "-"/>   
+						<Key  style = { {boxShadow:"0px 0px 0px 10px red inset"}} content = "-"/>   
 						</span>
 
 						<span style = {rightNumberStyle}>

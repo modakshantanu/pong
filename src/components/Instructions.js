@@ -5,7 +5,7 @@ const boxStyle = {
 
     // marginLeft: "50%",
 	// height:20,
-	 display: "inline-block",
+	display: "inline-block",
 	alignItems: "center",
 	justifyContent: "center",
 	boxShadow:"0px 0px 0px 10px red inset",
