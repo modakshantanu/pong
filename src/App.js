@@ -207,7 +207,10 @@ class App extends Component {
 	}
 
 	reset2v2() {
-		this.particles = [];
+		this.particles = []; this.powerups = [];
+		if (this.state.settings.powerups) {
+			this.powerupTimer = randomBetween (200,300);
+		}
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:2});
 		this.walls = [];
 		this.goals = [
@@ -233,7 +236,10 @@ class App extends Component {
 	}
 
 	reset3v3() {
-		this.particles = [];
+		this.particles = []; this.powerups = [];
+		if (this.state.settings.powerups) {
+			this.powerupTimer = randomBetween (200,300);
+		}
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:3});
 		this.walls = [];
 		// Generate the hexagonal coordinates programatically since its easier than hardcoding
@@ -358,6 +364,8 @@ class App extends Component {
 				let newVelocity = paddle.getReflection(this.ball,this.state.settings.curveball);
 				this.ball.dx = newVelocity.x;
 				this.ball.dy = newVelocity.y;
+				this.ball.x += this.ball.dx; this.ball.y += this.ball.dy;
+				this.createParticle((({x,y}) => ({x,y}))(this.ball))
 				this.ball.color = paddle.color;
 				if (paddle.powerup === 3) {
 					this.ball.boomerMode = true;
