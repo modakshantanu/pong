@@ -1,13 +1,7 @@
 
-import big from '../big.png';
+//import big from '../big.png';
 import { randomBetween } from '../utils/math';
 
-const Type = {
-	NONE:0,
-	BIG:1,
-	SMALL:2,
-	BOOMER:3,
-}
 export class PowerupToken {
 	
 	constructor(args) {

@@ -14,6 +14,7 @@ import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
 import Powerups from './components/Powerups';
 import {PowerupToken} from './gameObjects/PowerupToken'
+import {PlayerCard} from './gameObjects/PlayerCard'
 
 
 const backgroundStyling = { 
@@ -172,7 +173,7 @@ class App extends Component {
 
 	reset1v1() {
 		this.setState({redScore:0,blueScore:0,gameState:GameState.RUNNING,gameMode:1});
-		this.particles = []; this.powerups = [];
+		this.particles = []; this.powerups = []; 
 		if (this.state.settings.powerups) {
 			this.powerupTimer = randomBetween (200,300);
 		}
@@ -196,8 +197,12 @@ class App extends Component {
 			new Paddle({x1:490,y1:400,x2:490,y2:100,color:"blue"}),
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}), // is consistent
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}), //
-
 		]
+		this.playerCards = [
+			new PlayerCard({playerName:"Red 1", color:"red", x:25, y:50,left:"v", right:"b",AI:this.state.settings.AI[0]}),
+			new PlayerCard({playerName:"Blue 1",color:"blue", x:475,y:50,left:'-',right:"=",AI:this.state.settings.AI[3]})
+		]
+		
 		this.ball = new Ball({x:250, y: 250,});
 		this.initBots();
 		
@@ -228,6 +233,14 @@ class App extends Component {
 			new Paddle({x1:250,y1:490,x2:490,y2:250,color:"blue"}),
 			new Paddle({x1:10,y1:250,x2:250,y2:490,color:"blue"}),
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}),
+		]
+		this.playerCards = [
+			new PlayerCard({playerName:"Red 1", color:"red",AI:this.state.settings.AI[0],left:"1",right:"2",x:50,y:100}),
+			new PlayerCard({playerName:"Red 2", color:"red",AI:this.state.settings.AI[1],left:"S",right:"D",x:450,y:100}	),
+			
+			new PlayerCard({playerName:"Blue 1", color:"blue",AI:this.state.settings.AI[3],left:"-",right:"=",x:50,y:400}),
+			new PlayerCard({playerName:"Blue 2", color:"blue",AI:this.state.settings.AI[4],left:"L",right:";",x:450,y:400}),
+			
 		]
 		this.ball = new Ball({x:250, y: 250});
 		this.initBots();
@@ -263,7 +276,14 @@ class App extends Component {
 			let {x1,y1,x2,y2} = this.paddles[2-i];
 			this.paddles.push(new Paddle({x1:x1, y1: 500-y1, x2:x2, y2:500-y2,color:"blue"}))
 		}
-		
+		this.playerCards = [
+			new PlayerCard({playerName:"Red 1", color:"red",AI:this.state.settings.AI[0],left:"1",right:"2",x:25,y:100}),
+			new PlayerCard({playerName:"Red 2", color:"red",AI:this.state.settings.AI[1],left:"S",right:"D",x:250,y:17}	),
+			new PlayerCard({playerName:"Red 3", color:"red",AI:this.state.settings.AI[2],left:"V",right:"B",x:475,y:100}),
+			new PlayerCard({playerName:"Blue 1", color:"blue",AI:this.state.settings.AI[3],left:"-",right:"=",x:25,y:400}),
+			new PlayerCard({playerName:"Blue 2", color:"blue",AI:this.state.settings.AI[4],left:"L",right:";",x:250,y:483}),
+			new PlayerCard({playerName:"Blue 3", color:"blue",AI:this.state.settings.AI[5],left:"N",right:"M",x:475,y:400}),
+		]
 		this.ball = new Ball({x:250, y: 250});
 		this.initBots();
 		this.resetPositions();
@@ -274,7 +294,7 @@ class App extends Component {
 		this.particles = [];
 		this.setState({redpower:0, bluepower:0});
 		let randomAngle = this.state.gameMode === 1? randomBetween(-Math.PI/4,Math.PI/4): randomBetween(0,2*Math.PI);
-		let initialBallVelocity = rotateVector({x:3,y:0},randomAngle);
+		let initialBallVelocity = rotateVector({x:2.5,y:0},randomAngle);
 
 		// Make the ball go either right or left with 50:50 chance
 		if (this.state.gameMode === 1 &&  Math.random() < 0.5) { 
@@ -339,6 +359,12 @@ class App extends Component {
 		this.goals.forEach(goal => {
 			goal.render(this.state);
 		})
+		this.playerCards.forEach((card,i) => {
+			
+			card.render(this.state)
+			
+		});
+		
 		this.powerups.forEach(p => p.render(this.state));
 		
 		for (let i = this.particles.length - 1; i >= 0; i--) {

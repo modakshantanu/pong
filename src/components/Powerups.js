@@ -43,11 +43,7 @@ const rightStyle = {
 
 export default class Powerups extends React.Component {
 
-	constructor(props) {
-		super(props);
 
-
-	}
 
 
 	render() {

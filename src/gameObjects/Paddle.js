@@ -107,8 +107,8 @@ export default class Paddle {
 		
 		let ref = reflection({x: ball.dx, y: ball.dy}, normalVector, 1.0);
 		// Add the vector from paddle to ball, to increase the ball speed on each hit
-		ref.x += (ball.x - this.paddleCenterX)*0.05;
-		ref.y += (ball.y - this.paddleCenterY)*0.05;
+		ref.x += (ball.x - this.paddleCenterX)*0.04;
+		ref.y += (ball.y - this.paddleCenterY)*0.04;
 
 		let paddleVelocity = {x: this.paddleCenterX - this.previousCenterX, y: this.paddleCenterY-this.previousCenterY};
 		if (paddleVelocity.x === 0 && paddleVelocity.y === 0) {
