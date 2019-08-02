@@ -59,7 +59,8 @@ class App extends Component {
 			settings: {
 				AI:[false,false,false,false,false,false],
 				curveball:false,
-				powerups:false
+				powerups:false,
+				accel:false
 			},
 			redpower: Powerup.NONE,
 			bluepower: Powerup.NONE

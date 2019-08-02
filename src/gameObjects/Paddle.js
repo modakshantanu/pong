@@ -36,7 +36,8 @@ export default class Paddle {
 		this.minPosition = 100*(this.width/this.slidinglength)/2;
 		this.maxPosition = 100*(1 - this.width/this.slidinglength/2);
 		this.powerup = 0;	
-		this.powerupTimer = 0;
+		this.powerupTimer = 0;	
+		this.inputTicks = 0;
 	}
 
 	resetPowerup() {
@@ -119,7 +120,7 @@ export default class Paddle {
 	
 
 		// Deflect the ball further based on the movvement of the paddle
-		ref = rotateVector(ref, angleBetween(ref,paddleVelocity)*0.2 );
+		ref = rotateVector(ref, angleBetween(ref,paddleVelocity)*0.2)//*Math.sqrt(paddleVelocity.x**2 + paddleVelocity.y**2));
 
 		if (curve) {
 			let angle = angleBetween(paddleVelocity,{x:ball.dx, y:ball.dy});
@@ -132,6 +133,12 @@ export default class Paddle {
 		if (this.hidden) return;
 		var ctx = state.context;
 		
+		if (input.left || input.right) {
+			this.inputTicks++;
+		} else {
+			this.inputTicks = 1;
+		}
+
 		if (this.powerupTimer > 0) {
 			this.powerupTimer--;
 			
@@ -143,12 +150,21 @@ export default class Paddle {
 
 	
 		// Move the paddle based on keyboard input
+		var delta = 1;
+		
+		if (state.settings.accel) {
+			if (this.inputTicks < 5) {
+				delta = this.inputTicks*0.2;
+			}
+		}
+
+
 		if (input.right) {
-			this.position++;
+			this.position+=delta;
 		}
 
 		if (input.left) {
-			this.position--;
+			this.position-=delta;
 		}
 
 		// Stop it from going beyond the limit

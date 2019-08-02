@@ -60,10 +60,12 @@ export default class Settings extends React.Component {
 		this.AICheckboxChange = this.AICheckboxChange.bind(this);
 		this.curveballChange = this.curveballChange.bind(this);
 		this.powerupsChange = this.powerupsChange.bind(this);
+		this.accelChange = this.accelChange.bind(this);
 	
 	}
 
 	toggleDropdown() {
+		console.log("CLICKED");
 		this.setState((state) => ({opened: !state.opened}));
 	}
 
@@ -82,7 +84,11 @@ export default class Settings extends React.Component {
 		newSettings.powerups = e.target.checked;
 		this.props.changeHandler(newSettings);
 	}
-
+	accelChange(e) {
+		let newSettings = this.props.settings;
+		newSettings.accel = e.target.checked;
+		this.props.changeHandler(newSettings);
+	}
 
 	render() {
 
@@ -101,6 +107,7 @@ export default class Settings extends React.Component {
 
 		var curveballCheckbox = <input type = "checkbox" checked = {this.props.settings.curveball} onChange = {this.curveballChange}></input>
 		var powerupsCheckbox =  <input type = "checkbox" checked = {this.props.settings.powerups} onChange = {this.powerupsChange}></input>
+		var accelCheckbox = <input type = "checkbox" checked = {this.props.settings.accel} onChange = {this.accelChange}></input>
 
 		const content = (
 			<div style = {dropdownContent}>
@@ -112,6 +119,7 @@ export default class Settings extends React.Component {
 					<div style = {{fontSize:"13px"}}>AI Settings are applied when you reset game</div>
 					<div>Curveball {curveballCheckbox}</div>
 					<div>Powerups {powerupsCheckbox}</div>
+					<div>Input Acceleration {accelCheckbox}</div>
 					
 				</div>
 			</div>
