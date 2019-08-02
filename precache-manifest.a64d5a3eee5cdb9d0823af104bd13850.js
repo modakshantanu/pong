@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d1ecfcca8e250284dfd479cf02a1cf67",
+    "revision": "4c1f08fc23f334e9e83bb7c402d8a9d1",
     "url": "/pong/index.html"
   },
   {
-    "revision": "a22ba005aa9631d33404",
+    "revision": "6712a28c4274bca9b20b",
     "url": "/pong/static/css/main.005ad91d.chunk.css"
   },
   {
-    "revision": "8e9e55c8a417b5140e90",
-    "url": "/pong/static/js/2.97289204.chunk.js"
+    "revision": "fa8394e84343edfe9c78",
+    "url": "/pong/static/js/2.908a38ca.chunk.js"
   },
   {
-    "revision": "a22ba005aa9631d33404",
-    "url": "/pong/static/js/main.f23e8ff6.chunk.js"
+    "revision": "6712a28c4274bca9b20b",
+    "url": "/pong/static/js/main.ffbabaeb.chunk.js"
   },
   {
     "revision": "a417f954ab3244e00dfb",

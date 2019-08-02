@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/pong/static/css/main.005ad91d.chunk.css",
-    "main.js": "/pong/static/js/main.f23e8ff6.chunk.js",
-    "main.js.map": "/pong/static/js/main.f23e8ff6.chunk.js.map",
+    "main.js": "/pong/static/js/main.ffbabaeb.chunk.js",
+    "main.js.map": "/pong/static/js/main.ffbabaeb.chunk.js.map",
     "runtime~main.js": "/pong/static/js/runtime~main.a500ca0d.js",
     "runtime~main.js.map": "/pong/static/js/runtime~main.a500ca0d.js.map",
-    "static/js/2.97289204.chunk.js": "/pong/static/js/2.97289204.chunk.js",
-    "static/js/2.97289204.chunk.js.map": "/pong/static/js/2.97289204.chunk.js.map",
+    "static/js/2.908a38ca.chunk.js": "/pong/static/js/2.908a38ca.chunk.js",
+    "static/js/2.908a38ca.chunk.js.map": "/pong/static/js/2.908a38ca.chunk.js.map",
     "index.html": "/pong/index.html",
-    "precache-manifest.aedca3985d50b3db42b27cb20cf2a372.js": "/pong/precache-manifest.aedca3985d50b3db42b27cb20cf2a372.js",
+    "precache-manifest.a64d5a3eee5cdb9d0823af104bd13850.js": "/pong/precache-manifest.a64d5a3eee5cdb9d0823af104bd13850.js",
     "service-worker.js": "/pong/service-worker.js",
     "static/css/main.005ad91d.chunk.css.map": "/pong/static/css/main.005ad91d.chunk.css.map"
   }
