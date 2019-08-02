@@ -15,6 +15,51 @@ class Ball {
 
     }
 
+    draw(state) {
+        var ctx = state.context;
+        ctx.save();
+        ctx.translate(this.x + 0.5,this.y + 0.5);
+        ctx.rotate(this.r);
+
+        if (this.color === 'red') ctx.fillStyle = "#800";
+        else if (this.color === 'blue') ctx.fillStyle = "#008";
+        else ctx.fillStyle = "#888";
+       
+        ctx.beginPath();
+        ctx.arc(0,0,this.radius,this.radius,0,Math.PI*2);
+        ctx.fill();
+        ctx.closePath();
+
+        if (state.settings.curveball) 
+        {
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(-10,0);
+            ctx.lineTo(10,0);
+            ctx.stroke();
+            ctx.closePath();
+            
+        }
+        ctx.restore();
+    }
+
+    update(state) {
+        this.x += this.dx;
+        this.y += this.dy;
+        this.r += this.dr;
+        if (this.boomerMode) {
+            this.x += this.dx*0.5;
+            this.y += this.dy*0.5;
+        }
+        if( Math.sqrt(this.dx ** 2 + this.dy ** 2) < 2 ) {
+            this.dx *= 1.2; this.dy *= 1.2;
+        }
+        if (state.settings.curveball) {
+            ({x: this.dx, y:this.dy} = rotateVector({x:this.dx, y:this.dy}, this.dr/10));
+        }
+    }
+
     render(state){ 
 
         this.x += this.dx;

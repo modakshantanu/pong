@@ -8,7 +8,7 @@ export class PlayerCard {
 
 	}
 
-	render(state) {
+	draw(state) {
 		const ctx = state.context;
 		//ctx.save();
 		ctx.textBaseline = "top"; 

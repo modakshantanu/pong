@@ -10,12 +10,12 @@ export class PowerupToken {
 		this.delete = false;
 	}
 
-	render(state) {
+	draw(state) {
 		var ctx = state.context;
 		ctx.fillStyle = "#0a0";
 		ctx.fillRect(this.x - 10, this.y-10, 20, 20);
 	}
 
-	get
+	
 
 }

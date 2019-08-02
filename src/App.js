@@ -42,7 +42,8 @@ const Teams = {
 }
 
 var animationFrameId;
-
+var goalText;
+var goalTextStyle;
 // The main component that contains the canvas, and other buttons if needed
 class App extends Component {
 
@@ -72,10 +73,11 @@ class App extends Component {
 		this.reset2v2 = this.reset2v2.bind(this);
 		this.reset3v3 = this.reset3v3.bind(this);
 		this.resetPositions = this.resetPositions.bind(this);
-		this.renderPaddle1s = this.renderPaddles.bind(this);
+		this.updatePaddles = this.updatePaddles.bind(this);
 		this.changeSettings = this.changeSettings.bind(this);
 		this.initBots = this.initBots.bind(this);
 		this.createParticle = this.createParticle.bind(this);
+		this.update = this.update.bind(this);
 		
 		
 	}
@@ -306,10 +308,6 @@ class App extends Component {
 		this.paddles.forEach(paddle => {
 			paddle.position = 50;
 			paddle.resetPowerup();
-
-
-
-
 		})
 		this.bots.forEach(b => {
 			if (b) // To bypass the null elements in bots array
@@ -317,17 +315,17 @@ class App extends Component {
 		})
 	}
 
-	renderPaddles() {
+	updatePaddles() {
 
 		let keys = this.state.input.pressedKeys;
 		let b = this.bots;
 
-		this.paddles[0].render(this.state, b[0]? b[0].output:keys.red1); 
-		this.paddles[1].render(this.state, b[1]? b[1].output:keys.red2);
-		this.paddles[2].render(this.state, b[2]? b[2].output:keys.red3); 
-		this.paddles[3].render(this.state, b[3]? b[3].output:keys.blue1);
-		this.paddles[4].render(this.state, b[4]? b[4].output:keys.blue2); 
-		this.paddles[5].render(this.state, b[5]? b[5].output:keys.blue3);
+		this.paddles[0].update(this.state, b[0]? b[0].output:keys.red1); 
+		this.paddles[1].update(this.state, b[1]? b[1].output:keys.red2);
+		this.paddles[2].update(this.state, b[2]? b[2].output:keys.red3); 
+		this.paddles[3].update(this.state, b[3]? b[3].output:keys.blue1);
+		this.paddles[4].update(this.state, b[4]? b[4].output:keys.blue2); 
+		this.paddles[5].update(this.state, b[5]? b[5].output:keys.blue3);
 		
 		
 	}
@@ -336,47 +334,18 @@ class App extends Component {
 		this.particles.push(new Particle(args));
 	}
 
-	draw() {
-		
-
-		const ctx = this.state.context;
-
-		
-		if (this.state.gameState === GameState.PAUSED) {
-			ctx.font = "30px Courier New";
-			ctx.fillText("PAUSED", 200,250);
-			animationFrameId = requestAnimationFrame(this.draw);
+	update() {
+		if (this.state.gameState === GameState.GOAL_SCORED || this.state.gameState === GameState.PAUSED) {
 			return;
 		}
-		ctx.save();
-		ctx.fillStyle = "#FFF";
-		ctx.translate(0.5,0.5);
-		ctx.fillRect(0,0,500,500); // Erase the previous contents with this
-
-		
-		this.walls.forEach(wall => {
-			wall.render(this.state);
-		})
-		this.goals.forEach(goal => {
-			goal.render(this.state);
-		})
-		this.playerCards.forEach((card,i) => {
-			
-			card.render(this.state)
-			
-		});
-		
-		this.powerups.forEach(p => p.render(this.state));
-		
 		for (let i = this.particles.length - 1; i >= 0; i--) {
 			if (this.particles[i].delete) {
 				this.particles.splice(i,1);
 			} else {
-				this.particles[i].render(this.state);
+				this.particles[i].update();
 			}
 		}
 
-		// Collision between ball and paddles
 		this.paddles.forEach(paddle => {
 			// The below statement is to convert an array of objects {x,y} to array of numbers  
 			let hitbox = paddle.getHitbox();
@@ -426,8 +395,16 @@ class App extends Component {
 			}
 		})
 
+		//
+		this.bots.forEach((bot,index) => {
+			if (bot) {
+				bot.calculateOutput(this.ball, this.paddles[index]);
+			}
+		});
 
+		this.updatePaddles();
 
+		var ctx = this.state.context;
 		// Collision between ball and goals
 		this.goals.forEach(goal => {
 			if (intersects.circleLine(this.ball.x, this.ball.y, this.ball.radius, goal.x1, goal.y1, goal.x2, goal.y2)) {
@@ -443,28 +420,19 @@ class App extends Component {
 					ctx.fillStyle = "red";
 				}
 
-
-				ctx.font = "30px Courier New";
+				goalTextStyle = "30px Courier New";
+				goalText = teamText+ " has scored!";
 				
-				ctx.fillText(teamText+ " has scored!",80,250);
-
-				cancelAnimationFrame(animationFrameId);
+				
 				this.setState({gameState: GameState.GOAL_SCORED});
-
 				
+				setTimeout(() => {
+				this.resetPositions();
+				this.setState({gameState: GameState.RUNNING});
+				},1500);
+
 			}
-			
 		})
-
-		
-		this.bots.forEach((bot,index) => {
-			if (bot) {
-				
-				bot.calculateOutput(this.ball, this.paddles[index]);
-			}
-		});
-
-		this.renderPaddles();
 		if (this.state.input.pressedKeys.redpower && this.state.redpower !== 0) {
 			this.redPowerupHandler(this.state.redpower);
 		}
@@ -472,6 +440,42 @@ class App extends Component {
 			this.bluePowerupHandler(this.state.bluepower);
 
 		}
+
+	}
+
+	draw() {
+
+		this.update();
+		const ctx = this.state.context;
+		if (this.state.gameState === GameState.PAUSED) {
+			ctx.font = "30px Courier New";
+			ctx.fillStyle = "black";
+			ctx.fillText("PAUSED", 200,250);
+			animationFrameId = requestAnimationFrame(this.draw);
+			return;
+		}
+		if (this.state.gameState === GameState.GOAL_SCORED) {
+			ctx.font = "30px Courier New";
+			ctx.fillStyle = goalTextStyle;
+			ctx.fillText(goalText,80,250);
+			animationFrameId = requestAnimationFrame(this.draw);
+			return;
+		}
+		ctx.save();
+		ctx.fillStyle = "#FFF";
+		ctx.translate(0.5,0.5);
+		ctx.fillRect(0,0,500,500); // Erase the previous contents with this
+
+		
+		this.walls.forEach(wall => wall.draw(this.state));
+		this.goals.forEach(goal => 	goal.draw(this.state));
+		this.playerCards.forEach(card => card.draw(this.state));
+		this.powerups.forEach(p => p.draw(this.state));
+		this.particles.forEach(p => p.draw(this.state));
+		this.paddles.forEach(p => p.draw(this.state));
+
+
+		
 		this.ball.render(this.state);
 		this.createParticle({x:this.ball.x, y:this.ball.y, color:this.ball.color})
 		if (this.state.settings.powerups) {
@@ -484,17 +488,18 @@ class App extends Component {
 
 
 		ctx.restore();
-		if (this.state.gameState === GameState.RUNNING) 
-			animationFrameId = requestAnimationFrame(this.draw); // Call draw() again on the next frame
-		else if (this.state.gameState === GameState.GOAL_SCORED) {
-			cancelAnimationFrame(animationFrameId);
+		animationFrameId = requestAnimationFrame(this.draw);
+		// if (this.state.gameState === GameState.RUNNING) 
+		// 	animationFrameId = requestAnimationFrame(this.draw); // Call draw() again on the next frame
+		// else if (this.state.gameState === GameState.GOAL_SCORED) {
+		// 	cancelAnimationFrame(animationFrameId);
 		
-			setTimeout(() => {
-				animationFrameId = requestAnimationFrame(this.draw); 
-				this.resetPositions();
-				this.setState({gameState: GameState.RUNNING});
-			},1500);
-		}
+		// 	setTimeout(() => {
+		// 		animationFrameId = requestAnimationFrame(this.draw); 
+		// 		this.resetPositions();
+		// 		this.setState({gameState: GameState.RUNNING});
+		// 	},1500);
+		// }
 
 	
 	}
