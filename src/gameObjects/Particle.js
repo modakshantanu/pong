@@ -9,6 +9,11 @@ export class Particle {
 	}
 
 	draw(state) {
+		this.lifetime--;
+		if (this.lifetime <= 0) {
+			this.delete = true;
+			this.lifetime = 0;
+		}
 		var ctx = state.context;
 		ctx.fillStyle = this.color;
 		ctx.beginPath();
@@ -20,10 +25,11 @@ export class Particle {
 	}
 
 	update() {
-		this.lifetime--;
-		if (this.lifetime <= 0) {
-			this.delete = true;
-		}
+		// This should actually be in render, so ball trail has a fixed size
+		// this.lifetime--;
+		// if (this.lifetime <= 0) {
+		// 	this.delete = true;
+		// }
 	}
 
 	render(state) {

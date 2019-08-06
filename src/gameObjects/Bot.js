@@ -6,14 +6,13 @@ export class Bot {
 	constructor(args) {
 		this.walls = args.walls; // All other paddle ranges are treated as walls
 		this.output = {left:0,right:0};
-		this.waitTimer = 0;
+		
 		this.lookAhead = 10; // Bot will only calculate the ball's trajectory upto 3 bounces into the future	
 		this.debug = args.debug; 
 		this.curve = args.curve;
 	}
 
 	reset() {
-		this.waitTimer = -1;
 		this.output = {left:0,right:0};
 	}
 	calculateOutput(ball, paddle) {
@@ -23,12 +22,8 @@ export class Bot {
 		// once after every impact off another paddle
 		//console.log(this.waitTimer);
 		
-		if (this.waitTimer > 0 && !this.curve) {
-			this.waitTimer--;
-			return;
-		} else {
-			this.waitTimer = 0; // Just in case waittimer became negative
-		}
+		
+	
 		let piw = paddle.getInnerWall();
 		
 		// Temporary object to simulate the ball
@@ -65,11 +60,7 @@ export class Bot {
 					b.dx = nextVelocity.x; b.dy = nextVelocity.y;
 					b.x += b.dx; b.y += b.dy;
 					
-					// Update waitTimer if it is the first bounce
-					if (this.waitTimer === 0) {
-						// The below statement is weird to account for the case when ball.dx = 0, resulting in 0/0
-						this.waitTimer = Math.round((Math.abs(ball.dx)>0.0001?((intersection.point.x-ball.x)/ball.dx ): ((intersection.point.y-ball.y)/ball.dy)))+1;
-					}
+					
 					bouncesLeft--;
 					bouncedFlag = true;
 				
@@ -90,9 +81,7 @@ export class Bot {
 				let current = {x:paddle.paddleCenterX, y:paddle.paddleCenterY};
 				// Update waitTimer if this is the first bounce
 	
-				if (this.waitTimer === 0) {
-					this.waitTimer = Math.round((Math.abs(ball.dx)>0.0001?((intersection.point.x-ball.x)/ball.dx ): ((intersection.point.y-ball.y)/ball.dy)))+1;
-				}
+				
 
 				// If the paddle is close enough, do nothing
 				if (distance2d(current.x, current.y, intersection.point.x, intersection.point.y) < 8) {
@@ -118,9 +107,8 @@ export class Bot {
 				}
 
 				// Now find the number of ticks before next calculation is needed
-				let paddleMovementTicks = Math.round(distance2d(current.x,current.y,intersection.point.x,intersection.point.y)
-				/ distance2d(current.x,current.y,dRight.x,dRight.y));
-				this.waitTimer = Math.min(this.waitTimer,paddleMovementTicks);
+				
+				
 				
 				return;
 			}

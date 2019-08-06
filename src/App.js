@@ -86,10 +86,12 @@ class App extends Component {
 		this.state.input.bindKeys();
 		
 		const context = this.refs.canvas.getContext('2d'); // This is to get context
-		this.powerupTimer = 100022;
+		this.powerupTimer = 100000;
 		this.setState({context:context});		
 		this.reset1v1();
 		animationFrameId = requestAnimationFrame(this.draw); 
+	//	setInterval(this.update, 1000/60);
+		this.update();
 
 
 	}
@@ -336,6 +338,8 @@ class App extends Component {
 
 	update() {
 		if (this.state.gameState === GameState.GOAL_SCORED || this.state.gameState === GameState.PAUSED) {
+			console.log("outta here!");
+			setTimeout(this.update,1000/60);
 			return;
 		}
 		for (let i = this.particles.length - 1; i >= 0; i--) {
@@ -427,8 +431,10 @@ class App extends Component {
 				this.setState({gameState: GameState.GOAL_SCORED});
 				
 				setTimeout(() => {
-				this.resetPositions();
-				this.setState({gameState: GameState.RUNNING});
+					this.resetPositions();
+
+					this.setState({gameState: GameState.RUNNING});
+
 				},1500);
 
 			}
@@ -441,11 +447,13 @@ class App extends Component {
 
 		}
 
+		setTimeout(() => this.update(),1000/60);
+
 	}
 
 	draw() {
 
-		this.update();
+	
 		const ctx = this.state.context;
 		if (this.state.gameState === GameState.PAUSED) {
 			ctx.font = "30px Courier New";
