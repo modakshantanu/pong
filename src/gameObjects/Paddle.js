@@ -2,6 +2,7 @@
 import {distance2d ,rotateVector, reflection, angleBetween} from '../utils/2d';
 import intersects from 'intersects';
 import { randomBetween } from '../utils/math';
+import { paddleSpeed, ballInitSpeed } from '../utils/constants';
 
 // Class that handles drawing the paddle
 export default class Paddle {
@@ -108,8 +109,8 @@ export default class Paddle {
 		
 		let ref = reflection({x: ball.dx, y: ball.dy}, normalVector, 1.0);
 		// Add the vector from paddle to ball, to increase the ball speed on each hit
-		ref.x += (ball.x - this.paddleCenterX)*0.04;
-		ref.y += (ball.y - this.paddleCenterY)*0.04;
+		ref.x += (ball.x - this.paddleCenterX)*0.04*(ballInitSpeed/3);
+		ref.y += (ball.y - this.paddleCenterY)*0.04*(ballInitSpeed/3);
 
 		let paddleVelocity = {x: this.paddleCenterX - this.previousCenterX, y: this.paddleCenterY-this.previousCenterY};
 		if (paddleVelocity.x === 0 && paddleVelocity.y === 0) {
@@ -145,11 +146,11 @@ export default class Paddle {
 			
 			this.resetPowerup();
 		}
-		var delta = 1;
+		var delta = paddleSpeed;
 		
 		if (state.settings.accel) {
 			if (this.inputTicks < 5) {
-				delta = this.inputTicks*0.2;
+				delta = paddleSpeed*0.2;
 			}
 		}
 
@@ -161,13 +162,14 @@ export default class Paddle {
 		if (input.left) {
 			this.position-=delta;
 		}
+	
 
 		// Stop it from going beyond the limit
 		if (this.position > this.maxPosition) this.position = this.maxPosition;
 		if (this.position < this.minPosition) this.position = this.minPosition;
 
 		// Get x and y position of paddle center
-		this.position = Math.round(this.position);
+		//this.position = Math.round(this.position);
 
 		// Holds the previous coordinates of the paddle in the previous frame
 		// Used to see if the paddle is moving
@@ -197,74 +199,7 @@ export default class Paddle {
 		ctx.restore();
 	}
 
-	render(state,input) {
-		if (this.hidden) return;
-		var ctx = state.context;
-		
-		if (input.left || input.right) {
-			this.inputTicks++;
-		} else {
-			this.inputTicks = 1;
-		}
-
-		if (this.powerupTimer > 0) {
-			this.powerupTimer--;
-			
-		}
-		if (this.powerupTimer <= 0 && this.powerup !== 0) {
-			
-			this.resetPowerup();
-		}
-
 	
-		// Move the paddle based on keyboard input
-		var delta = 1;
-		
-		if (state.settings.accel) {
-			if (this.inputTicks < 5) {
-				delta = this.inputTicks*0.2;
-			}
-		}
-
-
-		if (input.right) {
-			this.position+=delta;
-		}
-
-		if (input.left) {
-			this.position-=delta;
-		}
-
-		// Stop it from going beyond the limit
-		if (this.position > this.maxPosition) this.position = this.maxPosition;
-		if (this.position < this.minPosition) this.position = this.minPosition;
-
-		// Get x and y position of paddle center
-		this.position = Math.round(this.position);
-
-		// Holds the previous coordinates of the paddle in the previous frame
-		// Used to see if the paddle is moving
-		this.previousCenterX = this.paddleCenterX;
-		this.previousCenterY = this.paddleCenterY;
-
-		this.paddleCenterX = (this.x1*(1-this.position/100) + this.x2*this.position/100);
-		this.paddleCenterY = (this.y1*(1-this.position/100) + this.y2*this.position/100);
-
-		
-
-		ctx.save();
-		ctx.translate(0.5,0.5);
-		ctx.strokeStyle = "#000000";
-
-		ctx.fillStyle = "#888888";
-		if (this.powerup === 3) ctx.fillStyle = "#fe0";
-		ctx.translate(this.paddleCenterX, this.paddleCenterY);
-		ctx.rotate(this.tiltAngle );
-		// Draw paddle with fillRect()
-		ctx.fillRect(-this.depth/2,-this.width/2,this.depth,this.width);
-		
-		ctx.restore();
-	}
 
 	getHitbox() {
 

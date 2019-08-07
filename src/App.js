@@ -15,7 +15,9 @@ import { Particle } from './gameObjects/Particle';
 import Powerups from './components/Powerups';
 import {PowerupToken} from './gameObjects/PowerupToken'
 import {PlayerCard} from './gameObjects/PlayerCard'
+import {updateRate, ballInitSpeed} from './utils/constants';
 
+var logTiming = false;
 
 const backgroundStyling = { 
 
@@ -44,6 +46,7 @@ const Teams = {
 var animationFrameId;
 var goalText;
 var goalTextStyle;
+var tickTock = false;
 // The main component that contains the canvas, and other buttons if needed
 class App extends Component {
 
@@ -61,7 +64,8 @@ class App extends Component {
 				AI:[false,false,false,false,false,false],
 				curveball:false,
 				powerups:false,
-				accel:false
+				accel:false,
+				trail:true,
 			},
 			redpower: Powerup.NONE,
 			bluepower: Powerup.NONE
@@ -90,8 +94,8 @@ class App extends Component {
 		this.setState({context:context});		
 		this.reset1v1();
 		animationFrameId = requestAnimationFrame(this.draw); 
-	//	setInterval(this.update, 1000/60);
-		this.update();
+		setInterval(this.update, 1000/updateRate);
+		
 
 
 	}
@@ -299,7 +303,7 @@ class App extends Component {
 		this.particles = [];
 		this.setState({redpower:0, bluepower:0});
 		let randomAngle = this.state.gameMode === 1? randomBetween(-Math.PI/4,Math.PI/4): randomBetween(0,2*Math.PI);
-		let initialBallVelocity = rotateVector({x:2.5,y:0},randomAngle);
+		let initialBallVelocity = rotateVector({x:ballInitSpeed,y:0},randomAngle);
 
 		// Make the ball go either right or left with 50:50 chance
 		if (this.state.gameMode === 1 &&  Math.random() < 0.5) { 
@@ -333,23 +337,27 @@ class App extends Component {
 	}
 
 	createParticle(args) {
-		this.particles.push(new Particle(args));
+		if (this.state.settings.trail)
+			this.particles.push(new Particle(args));
 	}
 
 	update() {
+		tickTock = !tickTock;
+		//var start = Date.now();
 		if (this.state.gameState === GameState.GOAL_SCORED || this.state.gameState === GameState.PAUSED) {
-			console.log("outta here!");
-			setTimeout(this.update,1000/60);
+			//setTimeout(this.update,1000/60);
 			return;
 		}
-		for (let i = this.particles.length - 1; i >= 0; i--) {
-			if (this.particles[i].delete) {
-				this.particles.splice(i,1);
-			} else {
-				this.particles[i].update();
+		if(tickTock) {
+			while (this.particles[0] && this.particles[0].delete) {
+				this.particles.shift();
 			}
-		}
+	
+			this.particles.forEach(particle => particle.update())
+			this.createParticle({x:this.ball.x, y:this.ball.y, color:this.ball.color})
 
+		}
+		
 		this.paddles.forEach(paddle => {
 			// The below statement is to convert an array of objects {x,y} to array of numbers  
 			let hitbox = paddle.getHitbox();
@@ -406,13 +414,17 @@ class App extends Component {
 			}
 		});
 
+		this.ball.update(this.state);
+	
 		this.updatePaddles();
 
+		//console.log(this.particles.length)
 		var ctx = this.state.context;
 		// Collision between ball and goals
 		this.goals.forEach(goal => {
 			if (intersects.circleLine(this.ball.x, this.ball.y, this.ball.radius, goal.x1, goal.y1, goal.x2, goal.y2)) {
 				// Update the score
+
 				let teamText;
 				if (goal.teamId === Teams.RED) {
 					this.setState(state => ({blueScore: state.blueScore + 1}));
@@ -447,13 +459,15 @@ class App extends Component {
 
 		}
 
-		setTimeout(() => this.update(),1000/60);
+		//console.log("Update Time: ",Date.now() - start);
+
+		//setTimeout(() => this.update(),1000/60);
 
 	}
 
 	draw() {
 
-	
+		var start = Date.now();
 		const ctx = this.state.context;
 		if (this.state.gameState === GameState.PAUSED) {
 			ctx.font = "30px Courier New";
@@ -469,23 +483,33 @@ class App extends Component {
 			animationFrameId = requestAnimationFrame(this.draw);
 			return;
 		}
+
+
+
 		ctx.save();
 		ctx.fillStyle = "#FFF";
 		ctx.translate(0.5,0.5);
 		ctx.fillRect(0,0,500,500); // Erase the previous contents with this
 
-		
+		var clear = Date.now();
+		if (clear-start > 1) console.log("Clear ",clear-start);
+
+
 		this.walls.forEach(wall => wall.draw(this.state));
 		this.goals.forEach(goal => 	goal.draw(this.state));
-		this.playerCards.forEach(card => card.draw(this.state));
+		//this.playerCards.forEach(card => card.draw(this.state));
 		this.powerups.forEach(p => p.draw(this.state));
 		this.particles.forEach(p => p.draw(this.state));
+
+		var stat = Date.now();
+		if(stat-clear > 1) console.log("Static ",stat-clear)
+	
 		this.paddles.forEach(p => p.draw(this.state));
-
-
+		this.ball.draw(this.state);
 		
-		this.ball.render(this.state);
-		this.createParticle({x:this.ball.x, y:this.ball.y, color:this.ball.color})
+		var moving = Date.now();
+		if (moving-stat > 1)
+			console.log("Paddle and ball ",moving-stat);
 		if (this.state.settings.powerups) {
 			if (this.powerupTimer > 0) this.powerupTimer--;
 			else {
@@ -497,17 +521,11 @@ class App extends Component {
 
 		ctx.restore();
 		animationFrameId = requestAnimationFrame(this.draw);
-		// if (this.state.gameState === GameState.RUNNING) 
-		// 	animationFrameId = requestAnimationFrame(this.draw); // Call draw() again on the next frame
-		// else if (this.state.gameState === GameState.GOAL_SCORED) {
-		// 	cancelAnimationFrame(animationFrameId);
 		
-		// 	setTimeout(() => {
-		// 		animationFrameId = requestAnimationFrame(this.draw); 
-		// 		this.resetPositions();
-		// 		this.setState({gameState: GameState.RUNNING});
-		// 	},1500);
-		// }
+		var timeTaken = Date.now() - start;
+		if (timeTaken > 5) {
+			console.log("Total ",timeTaken);
+		}
 
 	
 	}

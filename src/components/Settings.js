@@ -61,11 +61,12 @@ export default class Settings extends React.Component {
 		this.curveballChange = this.curveballChange.bind(this);
 		this.powerupsChange = this.powerupsChange.bind(this);
 		this.accelChange = this.accelChange.bind(this);
+		this.trailChange = this.trailChange.bind(this);
 	
 	}
 
 	toggleDropdown() {
-		console.log("CLICKED");
+	
 		this.setState((state) => ({opened: !state.opened}));
 	}
 
@@ -89,6 +90,11 @@ export default class Settings extends React.Component {
 		newSettings.accel = e.target.checked;
 		this.props.changeHandler(newSettings);
 	}
+	trailChange(e) {
+		let newSettings = this.props.settings;
+		newSettings.trail = e.target.checked;
+		this.props.changeHandler(newSettings);
+	}
 
 	render() {
 
@@ -108,6 +114,7 @@ export default class Settings extends React.Component {
 		var curveballCheckbox = <input type = "checkbox" checked = {this.props.settings.curveball} onChange = {this.curveballChange}></input>
 		var powerupsCheckbox =  <input type = "checkbox" checked = {this.props.settings.powerups} onChange = {this.powerupsChange}></input>
 		var accelCheckbox = <input type = "checkbox" checked = {this.props.settings.accel} onChange = {this.accelChange}></input>
+		var trailCheckbox = <input type = "checkbox" checked = {this.props.settings.trail} onChange = {this.trailChange}></input>
 
 		const content = (
 			<div style = {dropdownContent}>
@@ -120,6 +127,12 @@ export default class Settings extends React.Component {
 					<div>Curveball {curveballCheckbox}</div>
 					<div>Powerups {powerupsCheckbox}</div>
 					<div>Input Acceleration {accelCheckbox}</div>
+					
+				</div>
+
+				<div style = {categoryHeader}>
+					<div style = {{fontSize:"16px"}}>Graphics Settings</div>
+					<div>Ball Trail {trailCheckbox}</div>
 					
 				</div>
 			</div>
