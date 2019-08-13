@@ -17,8 +17,6 @@ import {PowerupToken} from './gameObjects/PowerupToken'
 import {PlayerCard} from './gameObjects/PlayerCard'
 import {updateRate, ballInitSpeed} from './utils/constants';
 
-var logTiming = false;
-
 const backgroundStyling = { 
 
 	backgroundColor : "	#fff"
@@ -208,7 +206,7 @@ class App extends Component {
 			new Paddle({x1:-100,y1:-100,x2:-100,y2:-100,hidden:true}), //
 		]
 		this.playerCards = [
-			new PlayerCard({playerName:"Red 1", color:"red", x:25, y:50,left:"v", right:"b",AI:this.state.settings.AI[0]}),
+			new PlayerCard({playerName:"Red 1", color:"red", x:25, y:50,left:"1", right:"2",AI:this.state.settings.AI[0]}),
 			new PlayerCard({playerName:"Blue 1",color:"blue", x:475,y:50,left:'-',right:"=",AI:this.state.settings.AI[3]})
 		]
 		
@@ -424,7 +422,7 @@ class App extends Component {
 		this.goals.forEach(goal => {
 			if (intersects.circleLine(this.ball.x, this.ball.y, this.ball.radius, goal.x1, goal.y1, goal.x2, goal.y2)) {
 				// Update the score
-
+				this.draw(0,true);
 				let teamText;
 				if (goal.teamId === Teams.RED) {
 					this.setState(state => ({blueScore: state.blueScore + 1}));
@@ -465,22 +463,22 @@ class App extends Component {
 
 	}
 
-	draw() {
-
+	draw(timeStamp , singleFrame = false) {
+	
 		var start = Date.now();
 		const ctx = this.state.context;
 		if (this.state.gameState === GameState.PAUSED) {
 			ctx.font = "30px Courier New";
 			ctx.fillStyle = "black";
 			ctx.fillText("PAUSED", 200,250);
-			animationFrameId = requestAnimationFrame(this.draw);
+			if (singleFrame === false)animationFrameId = requestAnimationFrame(this.draw);
 			return;
 		}
 		if (this.state.gameState === GameState.GOAL_SCORED) {
 			ctx.font = "30px Courier New";
 			ctx.fillStyle = goalTextStyle;
 			ctx.fillText(goalText,80,250);
-			animationFrameId = requestAnimationFrame(this.draw);
+			if (singleFrame === false) animationFrameId = requestAnimationFrame(this.draw);
 			return;
 		}
 
@@ -491,25 +489,25 @@ class App extends Component {
 		ctx.translate(0.5,0.5);
 		ctx.fillRect(0,0,500,500); // Erase the previous contents with this
 
-		var clear = Date.now();
-		if (clear-start > 1) console.log("Clear ",clear-start);
+		// var clear = Date.now();
+		// if (clear-start > 1) console.log("Clear ",clear-start);
 
 
 		this.walls.forEach(wall => wall.draw(this.state));
 		this.goals.forEach(goal => 	goal.draw(this.state));
-		//this.playerCards.forEach(card => card.draw(this.state));
+		this.playerCards.forEach(card => card.draw(this.state));
 		this.powerups.forEach(p => p.draw(this.state));
 		this.particles.forEach(p => p.draw(this.state));
 
-		var stat = Date.now();
-		if(stat-clear > 1) console.log("Static ",stat-clear)
+		// var stat = Date.now();
+		// if(stat-clear > 1) console.log("Static ",stat-clear)
 	
 		this.paddles.forEach(p => p.draw(this.state));
 		this.ball.draw(this.state);
 		
-		var moving = Date.now();
-		if (moving-stat > 1)
-			console.log("Paddle and ball ",moving-stat);
+		// var moving = Date.now();
+		// if (moving-stat > 1)
+		// 	console.log("Paddle and ball ",moving-stat);
 		if (this.state.settings.powerups) {
 			if (this.powerupTimer > 0) this.powerupTimer--;
 			else {
@@ -520,12 +518,12 @@ class App extends Component {
 
 
 		ctx.restore();
-		animationFrameId = requestAnimationFrame(this.draw);
+		if (singleFrame === false) animationFrameId = requestAnimationFrame(this.draw);
 		
-		var timeTaken = Date.now() - start;
-		if (timeTaken > 5) {
-			console.log("Total ",timeTaken);
-		}
+		// var timeTaken = Date.now() - start;
+		// if (timeTaken > 5) {
+		// 	console.log("Total ",timeTaken);
+		// }
 
 	
 	}
@@ -540,7 +538,7 @@ class App extends Component {
 	render() {
 		return (
 			<div style = {backgroundStyling}>
-			{/* <Hero/> */}
+
 			<div >
 				<h1>Pong++</h1>
 				
@@ -559,6 +557,7 @@ class App extends Component {
 						return {gameState: 1 - state.gameState}
 					})
 				}}>{this.state.gameState===0? "Play" : "Pause"}</button>
+				<div>For Orbital Evaluators: Some features have been added since Milestone 3.</div>
 				</center>
 				<Settings settings = {this.state.settings} changeHandler = {this.changeSettings}/>
 
