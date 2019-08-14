@@ -65,8 +65,6 @@ class App extends Component {
 				accel:false,
 				trail:true,
 			},
-			redpower: Powerup.NONE,
-			bluepower: Powerup.NONE
 
 		}
 
@@ -99,61 +97,34 @@ class App extends Component {
 	}
 
 	bluePowerupHandler(type) {
-
 		var targets = [];
 		if (type === 2) {
 			targets = [0,1,2];
-		} else targets = [3,4,5];
-
-		for (let i = 3; i > this.state.gameMode; i--) {
-			targets.splice(-1,1);
-		}
-
-		for (let i = targets.length - 1; i >= 0; i--) {
-			if (this.paddles[targets[i]].powerup !== 0) {
-				targets.splice(i,1);
+		} else targets = [3,4,5];	
+		for (let t in targets) {
+			let tgt = this.paddles[t];
+			switch(type) {
+				case 1: tgt.bigPowerup(); break;
+				case 2: tgt.smallPowerup(); break;
+				case 3: tgt.boomerPowerup(); break;
+				default: 
 			}
 		}
-		this.setState({bluepower:0});
-		if (targets.length === 0) return;
-		
-		let rand = Math.floor(randomBetween(0, targets.length -0.000001));
-		let tgt = this.paddles[targets[rand]];
-		switch(type) {
-			case 1: tgt.bigPowerup(); break;
-			case 2: tgt.smallPowerup(); break;
-			case 3: tgt.boomerPowerup(); break;
-			default: 
-		}
-
 	}
 
 	redPowerupHandler(type) {
-
 		var targets = [];
 		if (type === 2) {
 			targets = [3,4,5];
-		} else targets = [0,1,2];
-
-		for (let i = 3; i > this.state.gameMode; i--) {
-			targets.splice(-1,1);
-		}
-
-		for (let i = targets.length - 1; i >= 0; i--) {
-			if (this.paddles[targets[i]].powerup !== 0) {
-				targets.splice(i,1);
+		} else targets = [0,1,2];	
+		for (let t in targets) {
+			let tgt = this.paddles[t];
+			switch(type) {
+				case 1: tgt.bigPowerup(); break;
+				case 2: tgt.smallPowerup(); break;
+				case 3: tgt.boomerPowerup(); break;
+				default: 
 			}
-		}
-		this.setState({redpower:0});
-		if (targets.length === 0) return;
-		
-		let rand = Math.floor(randomBetween(0, targets.length -0.000001));
-		let tgt = this.paddles[targets[rand]];
-		switch(type) {
-			case 1: tgt.bigPowerup(); break;
-			case 2: tgt.smallPowerup(); break;
-			case 3: tgt.boomerPowerup(); break;
-			default: 
 		}
 	}
 
@@ -163,8 +134,8 @@ class App extends Component {
 		// A new array of all the goals, as well as walls
 		// Both goals and walls are treated as walls by bots
 		let goalWalls = this.goals.map(goal => new Wall({x1:goal.x1,y1:goal.y1,x2:goal.x2,y2:goal.y2})).concat(this.walls); 
-		this.redpower = Powerup.NONE;
-		this.bluepower = Powerup.NONE;
+
+	
 		for (let i = 0; i < 6; i++) {
 			if (this.state.settings.AI[i]) {
 				let modifiedWalls = [...goalWalls]; // Create a new array with all walls except that player's goal
@@ -299,7 +270,6 @@ class App extends Component {
 	resetPositions() {
 		this.powerups = [];
 		this.particles = [];
-		this.setState({redpower:0, bluepower:0});
 		let randomAngle = this.state.gameMode === 1? randomBetween(-Math.PI/4,Math.PI/4): randomBetween(0,2*Math.PI);
 		let initialBallVelocity = rotateVector({x:ballInitSpeed,y:0},randomAngle);
 
@@ -394,11 +364,12 @@ class App extends Component {
 		// Collision between ball and powerup 
 		this.powerups.forEach((p,i) => {
 			if (intersects.boxCircle(p.x-10,p.y-10,20,20,this.ball.x, this.ball.y, this.ball.radius)) {
-				if(this.ball.color === "red" && this.state.redpower === 0) {
-					this.setState( {redpower : Math.floor(randomBetween(1.0000001,3.99999999))});
+				if(this.ball.color === "red") {
+					this.redPowerupHandler(Math.floor(randomBetween(1.0000001,3.99999999)));
 				}
-				else if(this.ball.color === "blue" && this.state.bluepower === 0) {
-					this.setState( {bluepower : Math.floor(randomBetween(1.0000001,3.99999999))});
+				else if(this.ball.color === "blue") {
+					this.bluePowerupHandler(Math.floor(randomBetween(1.0000001,3.99999999)));
+
 				}
 				
 				this.powerups.splice(i,1);
@@ -448,18 +419,7 @@ class App extends Component {
 				},1500);
 
 			}
-		})
-		if (this.state.input.pressedKeys.redpower && this.state.redpower !== 0) {
-			this.redPowerupHandler(this.state.redpower);
-		}
-		if (this.state.input.pressedKeys.bluepower && this.state.bluepower !== 0) {
-			this.bluePowerupHandler(this.state.bluepower);
-
-		}
-
-		//console.log("Update Time: ",Date.now() - start);
-
-		//setTimeout(() => this.update(),1000/60);
+		});
 
 	}
 
@@ -544,7 +504,7 @@ class App extends Component {
 				
 				<canvas ref = "canvas" width = "501" height = "501"/>
 				<Scoreboard redScore = {this.state.redScore} blueScore = {this.state.blueScore}/>
-				<Powerups red = {this.state.redpower} blue = {this.state.bluepower}/>
+
 				<center>
 					<button id = "1v1" onClick = {this.reset1v1}>Reset 1v1</button> 
 					<button id = "2v2" onClick = {this.reset2v2}>Reset 2v2</button>

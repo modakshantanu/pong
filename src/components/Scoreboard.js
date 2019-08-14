@@ -235,10 +235,7 @@ export class Scoreboard extends React.Component {
 						To play, select your desired settings, and press one of the reset buttons to choose the number of players. Controls are shown above.
 					</div><hr/>
 					<div>
-						In a 1v1 game, the players playing are Red 1 and Blue 1. For 2v2, it's Red 1 and Red 2 vs Blue 1 and Blue 2. Similar for 3v3
-					</div><hr/>
-					<div>
-						When playing with powerups, hit the ball over a green square to collect a powerup. Press '3' for Red team or '0' for blue team to use the powerup
+						When playing with powerups, hit the ball over a green square to collect a powerup. NEW: It will be activated upon contact
 					</div>
 					<hr/>
 					<div>

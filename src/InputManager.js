@@ -35,11 +35,9 @@ const KEY = {
 		this.pressedKeys.red1 = {right:0,left:0};
 		this.pressedKeys.red2 = {right:0,left:0};
 		this.pressedKeys.red3 = {right:0,left:0};
-		this.pressedKeys.redpower = false;
 		this.pressedKeys.blue1 = {right:0,left:0};
 		this.pressedKeys.blue2 = {right:0,left:0};
 		this.pressedKeys.blue3 = {right:0,left:0};
-		this.pressedKeys.bluepower = false;
 	}
 
 
@@ -87,8 +85,6 @@ const KEY = {
 				
 				keys.blue1.right = value;
 				break;
-			case '3': keys.redpower = value; break;
-			case '0': keys.bluepower = value; break;
 				default:
 		 }
 		 this.pressedKeys = keys;
