@@ -64,6 +64,8 @@ class App extends Component {
 				powerups:false,
 				accel:false,
 				trail:true,
+				defFactor:0.2,
+				accelFactor:0.04
 			},
 
 		}
@@ -337,7 +339,7 @@ class App extends Component {
 
 			// Now hitboxArr contains the points in correct format [x1,y1,x2,y2...]
 			if (intersects.circlePolygon(this.ball.x, this.ball.y,this.ball.radius,hitboxArr)) {
-				let newVelocity = paddle.getReflection(this.ball,this.state.settings.curveball);
+				let newVelocity = paddle.getReflection(this.ball,this.state);
 				this.ball.dx = newVelocity.x;
 				this.ball.dy = newVelocity.y;
 				this.ball.x += this.ball.dx; this.ball.y += this.ball.dy;

@@ -46,6 +46,16 @@ const buttonStyle = {
 
 }
 
+const defaultSettings = {
+	AI:[false,false,false,false,false,false],
+	curveball:false,
+	powerups:false,
+	accel:false,
+	trail:true,
+	defFactor:0.2,
+	accelFactor:0.04
+}
+
 export default class Settings extends React.Component {
 
 
@@ -75,6 +85,8 @@ export default class Settings extends React.Component {
 		newSettings.AI[e.target.id] = !newSettings.AI[e.target.id];
 		this.props.changeHandler(newSettings);
 	}
+
+
 	curveballChange(e) {
 		let newSettings = this.props.settings;
 		newSettings.curveball = e.target.checked;
@@ -95,6 +107,26 @@ export default class Settings extends React.Component {
 		newSettings.trail = e.target.checked;
 		this.props.changeHandler(newSettings);
 	}
+	defChange(e) {
+		let newSettings = this.props.settings;
+		newSettings.defFactor = e.target.value;
+		this.props.changeHandler(newSettings);
+	}
+	afChange(e) {
+		let newSettings = this.props.settings;
+		newSettings.accelFactor = e.target.value;
+		this.props.changeHandler(newSettings);
+	}
+	resetAdv() {
+		let newSettings = this.props.settings;
+		newSettings.accelFactor = defaultSettings.accelFactor;
+		newSettings.defFactor = defaultSettings.defFactor;
+		this.props.changeHandler(newSettings);
+
+	}
+
+
+
 
 	render() {
 
@@ -115,6 +147,10 @@ export default class Settings extends React.Component {
 		var powerupsCheckbox =  <input type = "checkbox" checked = {this.props.settings.powerups} onChange = {this.powerupsChange}></input>
 		var accelCheckbox = <input type = "checkbox" checked = {this.props.settings.accel} onChange = {this.accelChange}></input>
 		var trailCheckbox = <input type = "checkbox" checked = {this.props.settings.trail} onChange = {this.trailChange}></input>
+		var defSlider  = <input type = "range" value = {this.props.settings.defFactor} min = "0" max = "0.5" step = "0.05" onChange = {this.defChange.bind(this)}></input>
+		var afSlider  = <input type = "range" value = {this.props.settings.accelFactor} min = "0" max = "0.2" step = "0.01" onChange = {this.afChange.bind(this)}></input>
+
+
 
 		const content = (
 			<div style = {dropdownContent}>
@@ -127,12 +163,21 @@ export default class Settings extends React.Component {
 					<div>Curveball {curveballCheckbox}</div>
 					<div>Powerups {powerupsCheckbox}</div>
 					<div>Input Acceleration {accelCheckbox}</div>
-					
 				</div>
 
 				<div style = {categoryHeader}>
 					<div style = {{fontSize:"16px"}}>Graphics Settings</div>
 					<div>Ball Trail {trailCheckbox}</div>
+					
+				</div>
+				<div style = {categoryHeader}>
+					<div style = {{fontSize:"16px"}}>Advanced</div>
+					<div>Deflection Factor {defSlider}</div>
+					<div style = {{fontSize:"13px"}}>Ball's direction change when hit by a moving paddle</div>
+
+					<div>Ball Acceleration{afSlider}</div>
+					<div style = {{fontSize:"13px"}}>How much the ball speeds up at every hit</div>
+					<button style = {{margin:2}} onClick = {this.resetAdv.bind(this)}>Reset Advanced Settings</button>
 					
 				</div>
 			</div>

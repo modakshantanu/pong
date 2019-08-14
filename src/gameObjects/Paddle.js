@@ -72,7 +72,7 @@ export default class Paddle {
 
 	}
 
-	getReflection(ball,curve) {
+	getReflection(ball,state) {
 		
 		// First, figure out which edge the ball collided with. 
 
@@ -109,21 +109,18 @@ export default class Paddle {
 		
 		let ref = reflection({x: ball.dx, y: ball.dy}, normalVector, 1.0);
 		// Add the vector from paddle to ball, to increase the ball speed on each hit
-		ref.x += (ball.x - this.paddleCenterX)*0.04*(ballInitSpeed/3);
-		ref.y += (ball.y - this.paddleCenterY)*0.04*(ballInitSpeed/3);
+		ref.x += (ball.x - this.paddleCenterX)*state.settings.accelFactor*(ballInitSpeed/3);
+		ref.y += (ball.y - this.paddleCenterY)*state.settings.accelFactor*(ballInitSpeed/3);
 
 		let paddleVelocity = {x: this.paddleCenterX - this.previousCenterX, y: this.paddleCenterY-this.previousCenterY};
 		if (paddleVelocity.x === 0 && paddleVelocity.y === 0) {
 			return ref;
 		}
 
-
-	
-
 		// Deflect the ball further based on the movvement of the paddle
-		ref = rotateVector(ref, angleBetween(ref,paddleVelocity)*0.2)//*Math.sqrt(paddleVelocity.x**2 + paddleVelocity.y**2));
+		ref = rotateVector(ref, angleBetween(ref,paddleVelocity)*state.settings.defFactor)//*Math.sqrt(paddleVelocity.x**2 + paddleVelocity.y**2));
 
-		if (curve) {
+		if (state.settings.curveBall) {
 			let angle = angleBetween(paddleVelocity,{x:ball.dx, y:ball.dy});
 			ball.dr += angle/20 + randomBetween(-0.1,0.1);
 		}
