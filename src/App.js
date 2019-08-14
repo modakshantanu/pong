@@ -60,12 +60,14 @@ class App extends Component {
 			gameMode:1, // Number of players on each side,
 			settings: {
 				AI:[false,false,false,false,false,false],
+				AIdiff:2,
 				curveball:false,
 				powerups:false,
 				accel:false,
 				trail:true,
 				defFactor:0.2,
-				accelFactor:0.04
+				accelFactor:0.04,
+
 			},
 
 		}
@@ -142,7 +144,7 @@ class App extends Component {
 			if (this.state.settings.AI[i]) {
 				let modifiedWalls = [...goalWalls]; // Create a new array with all walls except that player's goal
 				modifiedWalls.splice(i,1);
-				this.bots.push(new Bot({walls:modifiedWalls,curve:this.state.settings.curveball}));
+				this.bots.push(new Bot({walls:modifiedWalls,curve:this.state.settings.curveball,difficulty:this.state.settings.AIdiff}));
 				
 			} else {
 				this.bots.push(null); // Dummy to make the array index match other indices (0-5)

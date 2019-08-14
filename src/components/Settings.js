@@ -122,7 +122,11 @@ export default class Settings extends React.Component {
 		newSettings.accelFactor = defaultSettings.accelFactor;
 		newSettings.defFactor = defaultSettings.defFactor;
 		this.props.changeHandler(newSettings);
-
+	}
+	diffChange(e) {
+		let newSettings = this.props.settings;
+		newSettings.AIdiff = e.target.value;
+		this.props.changeHandler(newSettings);
 	}
 
 
@@ -149,6 +153,7 @@ export default class Settings extends React.Component {
 		var trailCheckbox = <input type = "checkbox" checked = {this.props.settings.trail} onChange = {this.trailChange}></input>
 		var defSlider  = <input type = "range" value = {this.props.settings.defFactor} min = "0" max = "0.5" step = "0.05" onChange = {this.defChange.bind(this)}></input>
 		var afSlider  = <input type = "range" value = {this.props.settings.accelFactor} min = "0" max = "0.2" step = "0.01" onChange = {this.afChange.bind(this)}></input>
+		var diffSlider  = <input type = "range" value = {this.props.settings.AIdiff} min = "1" max = "3" step = "1" onChange = {this.diffChange.bind(this)}></input>
 
 
 
@@ -159,6 +164,7 @@ export default class Settings extends React.Component {
 					<div style = {{display:"flex" , flexDirection:"row"}}>
 						{AICheckboxArray}
 					</div>
+					<div>AI Difficulty {diffSlider}</div> 
 					<div style = {{fontSize:"13px"}}>AI Settings are applied when you reset game</div>
 					<div>Curveball {curveballCheckbox}</div>
 					<div>Powerups {powerupsCheckbox}</div>

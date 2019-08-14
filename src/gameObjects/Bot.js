@@ -7,15 +7,42 @@ export class Bot {
 		this.walls = args.walls; // All other paddle ranges are treated as walls
 		this.output = {left:0,right:0};
 		
-		this.lookAhead = 10; // Bot will only calculate the ball's trajectory upto 3 bounces into the future	
+		
 		this.debug = args.debug; 
 		this.curve = args.curve;
+		this.difficulty = args.difficulty || 3;
+
+		if (this.difficulty === 3) this.lookAhead = 10;
+		else this.lookAhead = 2;
+
+		
+		
 	}
 
 	reset() {
 		this.output = {left:0,right:0};
 	}
-	calculateOutput(ball, paddle) {
+
+	calculateOutput(ball,paddle) {
+		if (this.difficulty >= 2) this.highDifficultyCalc(ball,paddle);
+		else this.lowDifficultyCalc(ball,paddle);
+	}
+
+	lowDifficultyCalc(ball,paddle) {
+		let current = {x:paddle.paddleCenterX, y:paddle.paddleCenterY};
+		let dRight = {
+			x: current.x+(paddle.x2 - paddle.x1)/100,
+			y: current.y+(paddle.y2 - paddle.y1)/100
+		}
+		if (distance2d(dRight.x, dRight.y, ball.x,ball.y) < 
+		distance2d(current.x,current.y, ball.x,ball.y)) {
+			this.output = {left:0, right:1};
+		} else {
+			this.output = {left:1,right:0};
+		}
+	}
+
+	highDifficultyCalc(ball, paddle) {
 
 		// Waittimer is used to prevent unnecessary calculations when the ball is moving 
 		// Calculation of the ball's trajectory is only done
@@ -105,11 +132,6 @@ export class Bot {
 					this.output = {left:1,right:0};
 				
 				}
-
-				// Now find the number of ticks before next calculation is needed
-				
-				
-				
 				return;
 			}
 			bouncesLeft--;
