@@ -27,3 +27,8 @@ canvas {
   background-color: black
 }
 
+input[type="range"] {
+ 
+  height:5px;
+}
+

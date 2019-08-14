@@ -10,7 +10,7 @@ export class Bot {
 		
 		this.debug = args.debug; 
 		this.curve = args.curve;
-		this.difficulty = args.difficulty || 3;
+		this.difficulty = Number(args.difficulty) || 3;
 
 		if (this.difficulty === 3) this.lookAhead = 10;
 		else this.lookAhead = 2;

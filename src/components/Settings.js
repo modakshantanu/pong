@@ -125,6 +125,7 @@ export default class Settings extends React.Component {
 	}
 	diffChange(e) {
 		let newSettings = this.props.settings;
+		
 		newSettings.AIdiff = e.target.value;
 		this.props.changeHandler(newSettings);
 	}

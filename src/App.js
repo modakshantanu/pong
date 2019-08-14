@@ -12,7 +12,6 @@ import { randomBetween } from './utils/math';
 import { Bot } from './gameObjects/Bot';
 import Settings from './components/Settings';
 import { Particle } from './gameObjects/Particle';
-import Powerups from './components/Powerups';
 import {PowerupToken} from './gameObjects/PowerupToken'
 import {PlayerCard} from './gameObjects/PlayerCard'
 import {updateRate, ballInitSpeed} from './utils/constants';
@@ -29,12 +28,6 @@ const GameState = {
 	GOAL_SCORED:2
 }
 
-const Powerup = {
-	NONE:0,
-	BIG:1,
-	SMALL:2,
-	BOOMER:3,
-}
 
 const Teams = {
 	RED:0,
@@ -131,7 +124,6 @@ class App extends Component {
 			}
 		}
 	}
-
 
 	initBots() {
 		this.bots = [];
@@ -521,7 +513,7 @@ class App extends Component {
 						return {gameState: 1 - state.gameState}
 					})
 				}}>{this.state.gameState===0? "Play" : "Pause"}</button>
-				<div>For Orbital Evaluators: Some features have been added since Milestone 3.</div>
+				<div>Multiplayer link <a href = "http://139.162.22.70:4000">here</a></div>
 				</center>
 				<Settings settings = {this.state.settings} changeHandler = {this.changeSettings}/>
 
