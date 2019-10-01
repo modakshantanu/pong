@@ -120,7 +120,8 @@ export default class Paddle {
 		// Deflect the ball further based on the movvement of the paddle
 		ref = rotateVector(ref, angleBetween(ref,paddleVelocity)*state.settings.defFactor)//*Math.sqrt(paddleVelocity.x**2 + paddleVelocity.y**2));
 
-		if (state.settings.curveBall) {
+		if (state.settings.curveball) {
+			
 			let angle = angleBetween(paddleVelocity,{x:ball.dx, y:ball.dy});
 			ball.dr += angle/20 + randomBetween(-0.1,0.1);
 		}

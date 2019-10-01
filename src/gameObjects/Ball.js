@@ -75,6 +75,7 @@ class Ball {
             this.dx *= 1.2; this.dy *= 1.2;
         }
         if (state.settings.curveball) {
+            // console.log("Here");
             ({x: this.dx, y:this.dy} = rotateVector({x:this.dx, y:this.dy}, this.dr/10));
         }
 

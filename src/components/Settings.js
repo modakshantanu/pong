@@ -88,6 +88,7 @@ export default class Settings extends React.Component {
 
 
 	curveballChange(e) {
+		console.log("Curvechange");
 		let newSettings = this.props.settings;
 		newSettings.curveball = e.target.checked;
 		this.props.changeHandler(newSettings);
@@ -155,7 +156,6 @@ export default class Settings extends React.Component {
 		var defSlider  = <input type = "range" value = {this.props.settings.defFactor} min = "0" max = "0.5" step = "0.05" onChange = {this.defChange.bind(this)}></input>
 		var afSlider  = <input type = "range" value = {this.props.settings.accelFactor} min = "0" max = "0.2" step = "0.01" onChange = {this.afChange.bind(this)}></input>
 		var diffSlider  = <input type = "range" value = {this.props.settings.AIdiff} min = "1" max = "3" step = "1" onChange = {this.diffChange.bind(this)}></input>
-
 
 
 		const content = (
