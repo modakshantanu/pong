@@ -513,7 +513,7 @@ class App extends Component {
 						return {gameState: 1 - state.gameState}
 					})
 				}}>{this.state.gameState===0? "Play" : "Pause"}</button>
-				<div>Multiplayer link <a href = "http://139.162.22.70:4000">here</a></div>
+				<div>Multiplayer link <a href = "http://172.104.176.106:4000">here</a></div>
 				</center>
 				<Settings settings = {this.state.settings} changeHandler = {this.changeSettings}/>
 
